@@ -1,0 +1,233 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="PKHeX.Mobile.Views.SaveEditor"
+             xmlns:vm="clr-namespace:PKHeX.ViewModels"
+             xmlns:syncfusion="clr-namespace:Syncfusion.XForms.Accordion;assembly=Syncfusion.Expander.XForms"
+             xmlns:tabView="clr-namespace:Syncfusion.XForms.TabView;assembly=Syncfusion.SfTabView.XForms"
+             xmlns:comboBox="clr-namespace:Syncfusion.XForms.ComboBox;assembly=Syncfusion.SfComboBox.XForms"
+             Title="Save Editor">
+    
+    <ContentPage.BindingContext>
+        <vm:SaveFileViewModel x:Name="VM" />
+    </ContentPage.BindingContext>
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Color x:Key="HeadingPrimary">LightCoral</Color>
+            <Style x:Key="LStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource HeadingPrimary}" />
+                <Setter Property="FontSize" Value="Micro" />
+                <Setter Property="Margin" Value="4,4,4,0" />
+            </Style>
+            <Style x:Key="BoxDiv" TargetType="BoxView">
+                <Setter Property="Color" Value="Gray" />
+                <Setter Property="HeightRequest" Value="1" />
+                <Setter Property="Margin" Value="4,16,4,4" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Export" Priority="0" Clicked ="ExportSAV"/>
+    </ContentPage.ToolbarItems>
+
+    <ScrollView>
+        <StackLayout Orientation="Vertical" Padding="16" Spacing="10">
+
+            <Label x:Name="L_TrDetail" Text="{Binding Title, FallbackValue='Save Details'}" Margin="4,4,4,4"/>
+
+            <syncfusion:SfAccordion Margin="2" ExpandMode="SingleOrNone" AutoScrollPosition="None">
+                <syncfusion:AccordionItem>
+                    <syncfusion:AccordionItem.Header>
+                        <Grid Padding="10,0,0,10">
+                            <Label Text="Active PKM:" VerticalTextAlignment="Center" HeightRequest="60"/>
+                            <Image x:Name="PB_00" Source="" MinimumWidthRequest="40" MinimumHeightRequest="30" WidthRequest="80" HeightRequest="60" Aspect="AspectFit"/>
+                        </Grid>
+                    </syncfusion:AccordionItem.Header>
+                    <syncfusion:AccordionItem.Content>
+                        <StackLayout>
+                            <Button Text="Edit Active Pokémon" Clicked="B_EditPanePKM_Click"/>
+                            <Button Text="Legalize Active Pokémon" Clicked="B_Legalize_Click"/>
+
+                            <BoxView Style="{StaticResource BoxDiv}"/>
+                            <Label  Text="Import" Style="{StaticResource LStyle}"/>
+                            <Button Text="Import Showdown Set" Clicked="B_ImportShowdownPKM_Click"/>
+                            <Button Text="Import PKM from QR Code" Clicked="B_ScanPKM_Click"/>
+                            <Button Text="Import PKM from Clipboard" Clicked="B_ImportPKM_Click"/>
+
+                            <BoxView Style="{StaticResource BoxDiv}"/>
+                            <Label  Text="Export" Style="{StaticResource LStyle}"/>
+                            <Button Text="Export Showdown Set" Clicked="B_ExportShowdownPKM_Click"/>
+                            <Button Text="Export PKM to QR Code" Clicked="B_ExportQR_Click"/>
+                            <Button Text="Export PKM to Clipboard" Clicked="B_ExportPKM_Click"/>
+                        </StackLayout>
+                    </syncfusion:AccordionItem.Content>
+                </syncfusion:AccordionItem>
+            </syncfusion:SfAccordion>
+
+            <tabView:SfTabView x:Name="TV" Margin="16" EnableSwiping="False">
+                <tabView:SfTabItem Title="Box">
+                    <tabView:SfTabItem.Content>
+                        <StackLayout>
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                                <Button x:Name="B_Left" Text="&lt;&lt;"></Button>
+                                <comboBox:SfComboBox Text="Select a Box..." x:Name="CB_CurrentBox"
+                                        DataSource="{Binding BoxNames}"/>
+                                <Button x:Name="B_Right" Text="&gt;&gt;"></Button>
+                            </StackLayout>
+                            <Grid x:Name="G_BoxSlots" HorizontalOptions="Center" Padding="0" Margin="0" RowSpacing="0" ColumnSpacing="0">
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1" />
+                                    <ColumnDefinition Width="40" />
+                                    <ColumnDefinition Width="1" />
+                                    <ColumnDefinition Width="40" />
+                                    <ColumnDefinition Width="1" />
+                                    <ColumnDefinition Width="40" />
+                                    <ColumnDefinition Width="1" />
+                                    <ColumnDefinition Width="40" />
+                                    <ColumnDefinition Width="1" />
+                                    <ColumnDefinition Width="40" />
+                                    <ColumnDefinition Width="1" />
+                                    <ColumnDefinition Width="40" />
+                                    <ColumnDefinition Width="1" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="1"/>
+                                    <RowDefinition Height="30" />
+                                    <RowDefinition Height="1"/>
+                                    <RowDefinition Height="30" />
+                                    <RowDefinition Height="1"/>
+                                    <RowDefinition Height="30" />
+                                    <RowDefinition Height="1"/>
+                                    <RowDefinition Height="30" />
+                                    <RowDefinition Height="1"/>
+                                    <RowDefinition Height="30" />
+                                    <RowDefinition Height="1"/>
+                                </Grid.RowDefinitions>
+
+                                <Image x:Name="PB_Box"
+                                       HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Aspect="AspectFill" 
+                                       Grid.RowSpan="11" Grid.ColumnSpan="13"
+                                       Source="" />
+
+                                <BoxView Grid.Row="0"  Grid.Column="0" Grid.ColumnSpan="13" BackgroundColor="Black" HeightRequest="1" VerticalOptions="End" HorizontalOptions="FillAndExpand"/>
+                                <BoxView Grid.Row="2"  Grid.Column="0" Grid.ColumnSpan="13" BackgroundColor="Gray"  HeightRequest="1" VerticalOptions="End" HorizontalOptions="FillAndExpand"/>
+                                <BoxView Grid.Row="4"  Grid.Column="0" Grid.ColumnSpan="13" BackgroundColor="Gray"  HeightRequest="1" VerticalOptions="End" HorizontalOptions="FillAndExpand"/>
+                                <BoxView Grid.Row="6"  Grid.Column="0" Grid.ColumnSpan="13" BackgroundColor="Gray"  HeightRequest="1" VerticalOptions="End" HorizontalOptions="FillAndExpand"/>
+                                <BoxView Grid.Row="8"  Grid.Column="0" Grid.ColumnSpan="13" BackgroundColor="Gray"  HeightRequest="1" VerticalOptions="End" HorizontalOptions="FillAndExpand"/>
+                                <BoxView Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="13" BackgroundColor="Black" HeightRequest="1" VerticalOptions="End" HorizontalOptions="FillAndExpand"/>
+
+                                <BoxView Grid.Column="0"  Grid.Row="0" Grid.RowSpan="11" BackgroundColor="Black" WidthRequest="1" VerticalOptions="FillAndExpand" HorizontalOptions="End"/>
+                                <BoxView Grid.Column="2"  Grid.Row="0" Grid.RowSpan="11" BackgroundColor="Gray"  WidthRequest="1" VerticalOptions="FillAndExpand" HorizontalOptions="End"/>
+                                <BoxView Grid.Column="4"  Grid.Row="0" Grid.RowSpan="11" BackgroundColor="Gray"  WidthRequest="1" VerticalOptions="FillAndExpand" HorizontalOptions="End"/>
+                                <BoxView Grid.Column="6"  Grid.Row="0" Grid.RowSpan="11" BackgroundColor="Gray"  WidthRequest="1" VerticalOptions="FillAndExpand" HorizontalOptions="End"/>
+                                <BoxView Grid.Column="8"  Grid.Row="0" Grid.RowSpan="11" BackgroundColor="Gray"  WidthRequest="1" VerticalOptions="FillAndExpand" HorizontalOptions="End"/>
+                                <BoxView Grid.Column="10" Grid.Row="0" Grid.RowSpan="11" BackgroundColor="Gray"  WidthRequest="1" VerticalOptions="FillAndExpand" HorizontalOptions="End"/>
+                                <BoxView Grid.Column="12" Grid.Row="0" Grid.RowSpan="11" BackgroundColor="Black" WidthRequest="1" VerticalOptions="FillAndExpand" HorizontalOptions="End"/>
+
+                                <Image x:Name="PB_01" Grid.Row="1" Grid.Column="01" Source="" />
+                                <Image x:Name="PB_02" Grid.Row="1" Grid.Column="03" Source="" />
+                                <Image x:Name="PB_03" Grid.Row="1" Grid.Column="05" Source="" />
+                                <Image x:Name="PB_04" Grid.Row="1" Grid.Column="07" Source="" />
+                                <Image x:Name="PB_05" Grid.Row="1" Grid.Column="09" Source="" />
+                                <Image x:Name="PB_06" Grid.Row="1" Grid.Column="11" Source="" />
+
+                                <Image x:Name="PB_07" Grid.Row="3" Grid.Column="01" Source="" />
+                                <Image x:Name="PB_08" Grid.Row="3" Grid.Column="03" Source="" />
+                                <Image x:Name="PB_09" Grid.Row="3" Grid.Column="05" Source="" />
+                                <Image x:Name="PB_10" Grid.Row="3" Grid.Column="07" Source="" />
+                                <Image x:Name="PB_11" Grid.Row="3" Grid.Column="09" Source="" />
+                                <Image x:Name="PB_12" Grid.Row="3" Grid.Column="11" Source="" />
+
+                                <Image x:Name="PB_13" Grid.Row="5" Grid.Column="01" Source="" />
+                                <Image x:Name="PB_14" Grid.Row="5" Grid.Column="03" Source="" />
+                                <Image x:Name="PB_15" Grid.Row="5" Grid.Column="05" Source="" />
+                                <Image x:Name="PB_16" Grid.Row="5" Grid.Column="07" Source="" />
+                                <Image x:Name="PB_17" Grid.Row="5" Grid.Column="09" Source="" />
+                                <Image x:Name="PB_18" Grid.Row="5" Grid.Column="11" Source="" />
+
+                                <Image x:Name="PB_19" Grid.Row="7" Grid.Column="01" Source="" />
+                                <Image x:Name="PB_20" Grid.Row="7" Grid.Column="03" Source="" />
+                                <Image x:Name="PB_21" Grid.Row="7" Grid.Column="05" Source="" />
+                                <Image x:Name="PB_22" Grid.Row="7" Grid.Column="07" Source="" />
+                                <Image x:Name="PB_23" Grid.Row="7" Grid.Column="09" Source="" />
+                                <Image x:Name="PB_24" Grid.Row="7" Grid.Column="11" Source="" />
+
+                                <Image x:Name="PB_25" Grid.Row="9" Grid.Column="01" Source="" />
+                                <Image x:Name="PB_26" Grid.Row="9" Grid.Column="03" Source="" />
+                                <Image x:Name="PB_27" Grid.Row="9" Grid.Column="05" Source="" />
+                                <Image x:Name="PB_28" Grid.Row="9" Grid.Column="07" Source="" />
+                                <Image x:Name="PB_29" Grid.Row="9" Grid.Column="09" Source="" />
+                                <Image x:Name="PB_30" Grid.Row="9" Grid.Column="11" Source="" />
+
+                            </Grid>
+                            <Label Text="{Binding ShowdownText, FallbackValue='Showdown Details'}" Margin="10"/>
+                        </StackLayout>
+                    </tabView:SfTabItem.Content>
+                </tabView:SfTabItem>
+                <tabView:SfTabItem Title="Party">
+                    <tabView:SfTabItem.Content>
+                        <StackLayout>
+                            <Grid x:Name="G_PartySlots" HorizontalOptions="Center" Padding="0" Margin="0" RowSpacing="0" ColumnSpacing="0">
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1" />
+                                    <ColumnDefinition Width="40" />
+                                    <ColumnDefinition Width="1" />
+                                    <ColumnDefinition Width="40" />
+                                    <ColumnDefinition Width="1" />
+                                    <ColumnDefinition Width="40" />
+                                    <ColumnDefinition Width="1" />
+                                    <ColumnDefinition Width="40" />
+                                    <ColumnDefinition Width="1" />
+                                    <ColumnDefinition Width="40" />
+                                    <ColumnDefinition Width="1" />
+                                    <ColumnDefinition Width="40" />
+                                    <ColumnDefinition Width="1" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="1"/>
+                                    <RowDefinition Height="30" />
+                                    <RowDefinition Height="1"/>
+                                </Grid.RowDefinitions>
+                                <BoxView Grid.Row="0"  Grid.Column="0" Grid.ColumnSpan="13" BackgroundColor="Black" HeightRequest="1" VerticalOptions="End" HorizontalOptions="FillAndExpand"/>
+                                <BoxView Grid.Row="2"  Grid.Column="0" Grid.ColumnSpan="13" BackgroundColor="Black"  HeightRequest="1" VerticalOptions="End" HorizontalOptions="FillAndExpand"/>
+
+                                <BoxView Grid.Column="0"  Grid.Row="0" Grid.RowSpan="3" BackgroundColor="Black" WidthRequest="1" VerticalOptions="FillAndExpand" HorizontalOptions="End"/>
+                                <BoxView Grid.Column="2"  Grid.Row="0" Grid.RowSpan="3" BackgroundColor="Gray"  WidthRequest="1" VerticalOptions="FillAndExpand" HorizontalOptions="End"/>
+                                <BoxView Grid.Column="4"  Grid.Row="0" Grid.RowSpan="3" BackgroundColor="Gray"  WidthRequest="1" VerticalOptions="FillAndExpand" HorizontalOptions="End"/>
+                                <BoxView Grid.Column="6"  Grid.Row="0" Grid.RowSpan="3" BackgroundColor="Gray"  WidthRequest="1" VerticalOptions="FillAndExpand" HorizontalOptions="End"/>
+                                <BoxView Grid.Column="8"  Grid.Row="0" Grid.RowSpan="3" BackgroundColor="Gray"  WidthRequest="1" VerticalOptions="FillAndExpand" HorizontalOptions="End"/>
+                                <BoxView Grid.Column="10" Grid.Row="0" Grid.RowSpan="3" BackgroundColor="Gray"  WidthRequest="1" VerticalOptions="FillAndExpand" HorizontalOptions="End"/>
+                                <BoxView Grid.Column="12" Grid.Row="0" Grid.RowSpan="3" BackgroundColor="Black" WidthRequest="1" VerticalOptions="FillAndExpand" HorizontalOptions="End"/>
+                                <Image x:Name="PP_01" Grid.Row="1" Grid.Column="01" Source="" />
+                                <Image x:Name="PP_02" Grid.Row="1" Grid.Column="03" Source="" />
+                                <Image x:Name="PP_03" Grid.Row="1" Grid.Column="05" Source="" />
+                                <Image x:Name="PP_04" Grid.Row="1" Grid.Column="07" Source="" />
+                                <Image x:Name="PP_05" Grid.Row="1" Grid.Column="09" Source="" />
+                                <Image x:Name="PP_06" Grid.Row="1" Grid.Column="11" Source="" />
+
+                            </Grid>
+                            <Label Text="{Binding ShowdownText, FallbackValue='Showdown Details'}" Margin="30"/>
+                        </StackLayout>
+                    </tabView:SfTabItem.Content>
+                </tabView:SfTabItem>
+                <tabView:SfTabItem Title="Cheats">
+                    <tabView:SfTabItem.Content>
+                        <StackLayout>
+                          <Label Text="Save File Cheats" Margin ="10"/>
+                          <Button Text="Max Money" Clicked="B_Money_Max_Click"/>
+                          <Button Text="Fill Inventory" Clicked="B_Inventory_All_Click"/>
+                        </StackLayout>
+                    </tabView:SfTabItem.Content>
+                </tabView:SfTabItem>
+            </tabView:SfTabView>
+        </StackLayout>
+    </ScrollView>
+    
+</ContentPage>

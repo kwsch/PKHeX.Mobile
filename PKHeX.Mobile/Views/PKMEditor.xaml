@@ -1,0 +1,463 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:xForms="clr-namespace:Syncfusion.SfNumericTextBox.XForms;assembly=Syncfusion.SfNumericTextBox.XForms"
+             xmlns:comboBox="clr-namespace:Syncfusion.XForms.ComboBox;assembly=Syncfusion.SfComboBox.XForms"
+             xmlns:tabView="clr-namespace:Syncfusion.XForms.TabView;assembly=Syncfusion.SfTabView.XForms"
+             xmlns:generic="clr-namespace:System.Collections.Generic;assembly=netstandard"
+             mc:Ignorable="d"
+             x:Class="PKHeX.Mobile.Views.PKMEditor"
+             Title="{Binding Title}">
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="UintEntry" TargetType="xForms:SfNumericTextBox">
+                <Setter Property="Minimum" Value="0"/>
+                <Setter Property="Watermark" Value="0"/>
+                <Setter Property="WatermarkColor" Value="LightGray"/>
+                <Setter Property="EnableGroupSeparator" Value="False"/>
+                <Setter Property="MaximumNumberDecimalDigits" Value="0"/>
+                <Setter Property="ParserMode" Value="Decimal"/>
+            </Style>
+          <Style x:Key="UintEntryEV" TargetType="xForms:SfNumericTextBox" 
+                 BasedOn="{StaticResource UintEntry}">
+            <Setter Property="Maximum" Value="{Binding Data.MaxEV, FallbackValue=65535}"/>
+          </Style>
+          <Style x:Key="UintEntry100" TargetType="xForms:SfNumericTextBox" 
+                 BasedOn="{StaticResource UintEntry}">
+            <Setter Property="Maximum" Value="100"/>
+          </Style>
+          <Style x:Key="UintEntry65535" TargetType="xForms:SfNumericTextBox" 
+                 BasedOn="{StaticResource UintEntry}">
+            <Setter Property="Maximum" Value="65535"/>
+          </Style>
+          <Style x:Key="UintEntry255" TargetType="xForms:SfNumericTextBox" 
+                 BasedOn="{StaticResource UintEntry}">
+            <Setter Property="Maximum" Value="255"/>
+          </Style>
+          <Style x:Key="UintEntryIV" TargetType="xForms:SfNumericTextBox"
+                 BasedOn="{StaticResource UintEntry}">
+              <Setter Property="Maximum" Value="{Binding Data.MaxIV, FallbackValue=31}"/>
+          </Style>
+          <Style x:Key="CBStyle" TargetType="comboBox:SfComboBox">
+            <Setter Property="IsEditableMode" Value="True"/>
+            <Setter Property="AllowFiltering" Value="False"/>
+            <Setter Property="TextHighlightMode" Value="FirstOccurrence"/>
+            <Setter Property="HighlightedTextColor" Value="Red"/>
+            <Setter Property="HighlightedTextFontAttributes" Value="Bold"/>
+            <Setter Property="SuggestionMode" Value="Contains"/>
+            <Setter Property="DisplayMemberPath" Value="Text"/>
+            <Setter Property="SelectedValuePath" Value="Value"/>
+            <Setter Property="MaximumDropDownHeight" Value="322"/>
+            <Setter Property="ShowSuggestionsOnFocus" Value="True"/>
+            <Setter Property="ClearButtonColor" Value="Red"/>
+          </Style>
+          <Style x:Key="DropDown" TargetType="comboBox:SfComboBox">
+            <Setter Property="IsEditableMode" Value="False"/>
+            <Setter Property="ClearButtonColor" Value="Red"/>
+          </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="QR" Priority="0" Clicked ="ExportPKM"/>
+    </ContentPage.ToolbarItems>
+
+    <StackLayout Padding="10">
+        <tabView:SfTabView x:Name="Tabs" VisibleHeaderCount="5" EnableSwiping="False">
+            <tabView:SfTabItem Title="Main">
+                <tabView:SfTabItem.Content>
+                    <ScrollView Padding="16">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Label  Text="Species" Grid.Row="0" Grid.Column="0"
+                                    VerticalTextAlignment="Center" HorizontalTextAlignment="End" />
+                            <comboBox:SfComboBox x:Name="CB_Species" Watermark="Species"
+                                                 Grid.Row="0" Grid.Column="1"
+                                                 Style="{StaticResource CBStyle}"
+                                                 DataSource="{Binding Source.SpeciesList}"
+                                                 SelectedValue="{Binding Species}"
+                                                 SelectionChanged="CB_Species_OnSelectionChanged"/>
+
+                            <StackLayout Orientation="Horizontal"
+                                         Grid.Row="1" Grid.Column="0">
+                                <Switch x:Name="CHK_IsNicknamed" IsToggled="{Binding IsNicknamed}" />
+                                <Label  Text="Nickname"
+                                        VerticalTextAlignment="Center" HorizontalTextAlignment="End" />
+                            </StackLayout>
+                            <Entry  x:Name="TB_Nickname" WidthRequest="180"
+                                    Grid.Row="1" Grid.Column="1"
+                                    Text="{Binding Nickname}" MaxLength="{Binding Data.NickLength}"/>
+
+                            <Label Text="Level" x:Name="L_Level"
+                                   Grid.Row="2" Grid.Column="0"
+                                   VerticalTextAlignment="Center" HorizontalTextAlignment="End" />
+                            <xForms:SfNumericTextBox Style="{StaticResource UintEntry100}"
+                                   Grid.Row="2" Grid.Column="1"
+                                   Value="{Binding CurrentLevel, FallbackValue=100}" x:Name="S_Level" Minimum="1" Completed="HandleLevel"/>
+
+                            <Label Text="Friendship" x:Name="L_Friendship"
+                                   Grid.Row="3" Grid.Column="0"
+                                   VerticalTextAlignment="Center" HorizontalTextAlignment="End" />
+                            <xForms:SfNumericTextBox Style="{StaticResource UintEntry255}"
+                                   Grid.Row="3" Grid.Column="1"
+                                   Value="{Binding Data.CurrentFriendship}" x:Name="TB_Friendship" Completed="HandleFriendship" />
+
+                            <Label Text="Held Item" x:Name="L_HeldItem"
+                                   Grid.Row="4" Grid.Column="0"
+                                   VerticalTextAlignment="Center" HorizontalTextAlignment="End" />
+                            <comboBox:SfComboBox x:Name="CB_HeldItem" Watermark="Held Item"
+                                   Grid.Row="4" Grid.Column="1"
+                                   Style="{StaticResource CBStyle}"
+                                   IsVisible="{Binding FeatureFlags.HeldItem}"
+                                   DataSource="{Binding Source.ItemList}"
+                                   SelectedValue="{Binding Item}"
+                                   SelectionChanged="CB_HeldItem_OnSelectionChanged"/>
+
+                            <Label Text="Nature" x:Name="L_Nature" IsVisible="{Binding FeatureFlags.Nature}"
+                                   Grid.Row="5" Grid.Column="0"
+                                   VerticalTextAlignment="Center" HorizontalTextAlignment="End" />
+                            <comboBox:SfComboBox x:Name="CB_Nature" Watermark="Nature"
+                                   Grid.Row="5" Grid.Column="1"
+                                   Style="{StaticResource CBStyle}"
+                                   IsVisible="{Binding FeatureFlags.Nature}"
+                                   DataSource="{Binding Source.NatureList}"
+                                   SelectedValue="{Binding Nature}"
+                                   SelectionChanged="CB_Nature_OnSelectionChanged"/>
+
+                            <Label Text="Form" x:Name="L_AltForm" IsVisible="{Binding FeatureFlags.Form}"
+                                   Grid.Row="6" Grid.Column="0"
+                                   VerticalTextAlignment="Center" HorizontalTextAlignment="End" />
+                            <comboBox:SfComboBox x:Name="CB_AltForm" Watermark="(Base Form)"
+                                   Grid.Row="6" Grid.Column="1"
+                                   Style="{StaticResource DropDown}"
+                                   IsVisible="{Binding FeatureFlags.Form}"
+                                   DataSource="{Binding Forms}"
+                                   SelectedValue="{Binding Form}"
+                                   SelectionChanged="CB_AltForm_OnSelectionChanged"/>
+
+                            <Label Text="Ability" x:Name="L_Ability" IsVisible="{Binding FeatureFlags.Ability}"
+                                   Grid.Row="7" Grid.Column="0"
+                                   VerticalTextAlignment="Center" HorizontalTextAlignment="End" />
+                            <comboBox:SfComboBox x:Name="CB_Ability" Watermark="Ability"
+                                   Grid.Row="7" Grid.Column="1"
+                                   Style="{StaticResource CBStyle}"
+                                   IsVisible="{Binding FeatureFlags.Ability}"
+                                   DataSource="{Binding Abilities}"
+                                   SelectedIndex="{Binding AbilityIndex}"
+                                   SelectionChanged="CB_Ability_OnSelectionChanged"/>
+                        </Grid>
+                    </ScrollView>
+                </tabView:SfTabItem.Content>
+            </tabView:SfTabItem>
+            
+            <tabView:SfTabItem Title="Met">
+                <tabView:SfTabItem.Content>
+                    <ScrollView>
+                    <StackLayout Padding="16">
+                        <Label Text="Version"/>
+                        <comboBox:SfComboBox x:Name="CB_Version" Watermark="Version"
+                                             Style="{StaticResource CBStyle}"
+                                             IsVisible="{Binding FeatureFlags.Version}"
+                                             DataSource="{Binding Source.Versions}"
+                                             SelectedValue="{Binding Version}"
+                                             SelectionChanged="CB_Version_OnSelectionChanged"/>
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="20" />
+                                <ColumnDefinition Width="80" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Image Grid.Row="0" Grid.Column="0"
+                                   Source="{Binding BallSprite}" />
+
+                            <Label Grid.Row="0" Grid.Column="1" Text="Ball"
+                                   VerticalTextAlignment="Center" HorizontalTextAlignment="End"/>
+
+                            <comboBox:SfComboBox x:Name="CB_Ball" Watermark="Ball"
+                                                 Grid.Row="0" Grid.Column="2"
+                                                 Style="{StaticResource CBStyle}"
+                                                 IsVisible="{Binding FeatureFlags.Ball}"
+                                                 DataSource="{Binding Source.Balls}"
+                                                 SelectedValue="{Binding Ball}"
+                                                 SelectionChanged="CB_Ball_OnSelectionChanged"/>
+                        </Grid>
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Label  Text="Met Level" x:Name="L_MetLevel"
+                                    IsVisible="{Binding FeatureFlags.Met}"
+                                    VerticalTextAlignment="Center" HorizontalTextAlignment="End"
+                                    Grid.Row="0" Grid.Column="0"/>
+                            <xForms:SfNumericTextBox Style="{StaticResource UintEntry100}" Value="{Binding Data.Met_Level}"
+                                    Grid.Row="0" Grid.Column="1"/>
+
+                            <Label  Text="Met Location" x:Name="L_MetLocation"
+                                    IsVisible="{Binding FeatureFlags.Met}"
+                                    VerticalTextAlignment="Center" HorizontalTextAlignment="End"
+                                    Grid.Row="1" Grid.Column="0"/>
+                            <comboBox:SfComboBox x:Name="CB_Met_Location" Watermark="Met Location"
+                                    IsVisible="{Binding FeatureFlags.Met}"
+                                             Grid.Row="1"
+                                             Grid.Column="1"
+                                             Style="{StaticResource CBStyle}"
+                                             DataSource="{Binding MetLocations}"
+                                             SelectedValue="{Binding MetLocation}"
+                                             SelectionChanged="CB_MetLocation_OnSelectionChanged"/>
+
+                            <Label Text="Met Date"
+                                    IsVisible="{Binding FeatureFlags.Dates}"
+                                   VerticalTextAlignment="Center" HorizontalTextAlignment="End"
+                                   Grid.Row="2" Grid.Column="0"/>
+                            <DatePicker MinimumDate="01/01/2000"
+                                        MaximumDate="12/31/2099"
+                                        Date="{Binding MetDate}"
+                                        IsVisible="{Binding FeatureFlags.Dates}"
+                                   Grid.Row="2" Grid.Column="1"/>
+                        </Grid>
+
+                        <Grid IsVisible="{Binding FeatureFlags.EggMet}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Label  Text="Egg Location" x:Name="L_EggLocation"
+                                    VerticalTextAlignment="Center" HorizontalTextAlignment="End"
+                                    Grid.Row="0" Grid.Column="0"/>
+
+                            <comboBox:SfComboBox x:Name="CB_Egg_Location" Watermark="Egg Location"
+                                             Grid.Row="0"
+                                             Grid.Column="1"
+                                             Style="{StaticResource CBStyle}"
+                                             DataSource="{Binding EggLocations}"
+                                             SelectedValue="{Binding EggLocation}"
+                                             SelectionChanged="CB_EggLocation_OnSelectionChanged"/>
+
+                            <Label Text="Egg Met Date"
+                                   IsVisible="{Binding FeatureFlags.Dates}"
+                                   VerticalTextAlignment="Center" HorizontalTextAlignment="End"
+                                   Grid.Row="1" Grid.Column="0"/>
+                            <DatePicker MinimumDate="01/01/2000"
+                                        MaximumDate="12/31/2099"
+                                        Date="{Binding EggMetDate}"
+                                        IsVisible="{Binding FeatureFlags.Dates}"
+                                   Grid.Row="1" Grid.Column="1"/>
+                        </Grid>
+                    </StackLayout>
+                    </ScrollView>
+                </tabView:SfTabItem.Content>
+            </tabView:SfTabItem>
+
+            <tabView:SfTabItem Title="Moves">
+                <tabView:SfTabItem.Content>
+                    <ScrollView Padding="16">
+                        <Grid x:Name="G_Moves" HorizontalOptions="Center" Padding="0" Margin="0" RowSpacing="10" ColumnSpacing="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="80" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <Label Text="Move"    Grid.Row="0" Grid.Column="0" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" x:Name="L_Move"/>
+                            <Label Text="PP Ups"  Grid.Row="0" Grid.Column="1" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" x:Name="L_PP"/>
+
+                            <comboBox:SfComboBox x:Name="CB_Move1" Watermark="Move 1"
+                                             Grid.Row="1"
+                                             Grid.Column="0"
+                                             Style="{StaticResource CBStyle}"
+                                             DataSource="{Binding Source.MoveList}"
+                                             SelectedValue="{Binding Move1}"
+                                             SelectionChanged="CB_Move1_OnSelectionChanged"/>
+                            <comboBox:SfComboBox x:Name="CB_Move2" Watermark="Move 2"
+                                             Grid.Row="2"
+                                             Grid.Column="0"
+                                             Style="{StaticResource CBStyle}"
+                                             DataSource="{Binding Source.MoveList}"
+                                             SelectedValue="{Binding Move2}"
+                                             SelectionChanged="CB_Move2_OnSelectionChanged"/>
+                            <comboBox:SfComboBox x:Name="CB_Move3" Watermark="Move 3"
+                                             Grid.Row="3"
+                                             Grid.Column="0"
+                                             Style="{StaticResource CBStyle}"
+                                             DataSource="{Binding Source.MoveList}"
+                                             SelectedValue="{Binding Move3}"
+                                             SelectionChanged="CB_Move3_OnSelectionChanged"/>
+                            <comboBox:SfComboBox x:Name="CB_Move4" Watermark="Move 4"
+                                             Grid.Row="4"
+                                             Grid.Column="0"
+                                             Style="{StaticResource CBStyle}"
+                                             DataSource="{Binding Source.MoveList}"
+                                             SelectedValue="{Binding Move4}"
+                                             SelectionChanged="CB_Move4_OnSelectionChanged"/>
+
+                            <comboBox:SfComboBox Grid.Row="1" Grid.Column="1"
+                                                 x:Name="PP1" Style="{StaticResource DropDown}" 
+                                                 SelectedItem="{Binding Data.Move1_PPUps, FallbackValue=0}">
+                                <comboBox:SfComboBox.ComboBoxSource>
+                                    <generic:List x:TypeArguments="x:String">
+                                        <x:String>0</x:String>
+                                        <x:String>1</x:String>
+                                        <x:String>2</x:String>
+                                        <x:String>3</x:String>
+                                    </generic:List>
+                                </comboBox:SfComboBox.ComboBoxSource>
+                            </comboBox:SfComboBox>
+                            <comboBox:SfComboBox Grid.Row="2" Grid.Column="1"
+                                                 x:Name="PP2" Style="{StaticResource DropDown}" 
+                                                 SelectedItem="{Binding Data.Move2_PPUps, FallbackValue=0}">
+                                <comboBox:SfComboBox.ComboBoxSource>
+                                    <generic:List x:TypeArguments="x:String">
+                                        <x:String>0</x:String>
+                                        <x:String>1</x:String>
+                                        <x:String>2</x:String>
+                                        <x:String>3</x:String>
+                                    </generic:List>
+                                </comboBox:SfComboBox.ComboBoxSource>
+                            </comboBox:SfComboBox>
+                            <comboBox:SfComboBox Grid.Row="3" Grid.Column="1"
+                                                 x:Name="PP3" Style="{StaticResource DropDown}"
+                                                 SelectedItem="{Binding Data.Move3_PPUps, FallbackValue=0}">
+                                <comboBox:SfComboBox.ComboBoxSource>
+                                    <generic:List x:TypeArguments="x:String">
+                                        <x:String>0</x:String>
+                                        <x:String>1</x:String>
+                                        <x:String>2</x:String>
+                                        <x:String>3</x:String>
+                                    </generic:List>
+                                </comboBox:SfComboBox.ComboBoxSource>
+                            </comboBox:SfComboBox>
+                            <comboBox:SfComboBox Grid.Row="4" Grid.Column="1"
+                                                 x:Name="PP4" Style="{StaticResource DropDown}" 
+                                                 SelectedItem="{Binding Data.Move4_PPUps, FallbackValue=0}">
+                                <comboBox:SfComboBox.ComboBoxSource>
+                                    <generic:List x:TypeArguments="x:String">
+                                        <x:String>0</x:String>
+                                        <x:String>1</x:String>
+                                        <x:String>2</x:String>
+                                        <x:String>3</x:String>
+                                    </generic:List>
+                                </comboBox:SfComboBox.ComboBoxSource>
+                            </comboBox:SfComboBox>
+
+                        </Grid>
+                    </ScrollView>
+                </tabView:SfTabItem.Content>
+            </tabView:SfTabItem>
+
+            <tabView:SfTabItem Title="Stats">
+                <tabView:SfTabItem.Content>
+                    <ScrollView Padding="16">
+                        <Grid x:Name="G_Stats" HorizontalOptions="Center" Padding="0" Margin="0" RowSpacing="0" ColumnSpacing="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="40" />
+                                <ColumnDefinition Width="40" />
+                                <ColumnDefinition Width="80" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <!-- No heading for the first column-->
+                            <Label Text="HP"         Grid.Row="1" Grid.Column="0" VerticalTextAlignment="Center" HorizontalTextAlignment="Start"/>
+                            <Label Text="ATK"        Grid.Row="2" Grid.Column="0" VerticalTextAlignment="Center" HorizontalTextAlignment="Start"/>
+                            <Label Text="DEF"        Grid.Row="3" Grid.Column="0" VerticalTextAlignment="Center" HorizontalTextAlignment="Start"/>
+                            <Label Text="SPA"        Grid.Row="4" Grid.Column="0" VerticalTextAlignment="Center" HorizontalTextAlignment="Start"/>
+                            <Label Text="SPD"        Grid.Row="5" Grid.Column="0" VerticalTextAlignment="Center" HorizontalTextAlignment="Start"/>
+                            <Label Text="SPE"        Grid.Row="6" Grid.Column="0" VerticalTextAlignment="Center" HorizontalTextAlignment="Start"/>
+
+                            <Label Text="IVs"        Grid.Row="0" Grid.Column="1" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" x:Name="L_IVs"/>
+                            <xForms:SfNumericTextBox Grid.Row="1" Grid.Column="1" Style="{StaticResource UintEntryIV}" Value="{Binding Data.IV_HP }" Completed="HandleIV" x:Name="IV_HP"/>
+                            <xForms:SfNumericTextBox Grid.Row="2" Grid.Column="1" Style="{StaticResource UintEntryIV}" Value="{Binding Data.IV_ATK}" Completed="HandleIV" x:Name="IV_ATK"/>
+                            <xForms:SfNumericTextBox Grid.Row="3" Grid.Column="1" Style="{StaticResource UintEntryIV}" Value="{Binding Data.IV_DEF}" Completed="HandleIV" x:Name="IV_DEF"/>
+                            <xForms:SfNumericTextBox Grid.Row="4" Grid.Column="1" Style="{StaticResource UintEntryIV}" Value="{Binding Data.IV_SPA}" Completed="HandleIV" x:Name="IV_SPA"/>
+                            <xForms:SfNumericTextBox Grid.Row="5" Grid.Column="1" Style="{StaticResource UintEntryIV}" Value="{Binding Data.IV_SPD}" Completed="HandleIV" x:Name="IV_SPD"/>
+                            <xForms:SfNumericTextBox Grid.Row="6" Grid.Column="1" Style="{StaticResource UintEntryIV}" Value="{Binding Data.IV_SPE}" Completed="HandleIV" x:Name="IV_SPE"/>
+
+                            <Label Text="EVs"        Grid.Row="0" Grid.Column="2" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" x:Name="L_EVs"/>
+                            <xForms:SfNumericTextBox Grid.Row="1" Grid.Column="2" Style="{StaticResource UintEntryEV}" Value="{Binding Data.EV_HP }" Completed="HandleEV" x:Name="EV_HP"/>
+                            <xForms:SfNumericTextBox Grid.Row="2" Grid.Column="2" Style="{StaticResource UintEntryEV}" Value="{Binding Data.EV_ATK}" Completed="HandleEV" x:Name="EV_ATK"/>
+                            <xForms:SfNumericTextBox Grid.Row="3" Grid.Column="2" Style="{StaticResource UintEntryEV}" Value="{Binding Data.EV_DEF}" Completed="HandleEV" x:Name="EV_DEF"/>
+                            <xForms:SfNumericTextBox Grid.Row="4" Grid.Column="2" Style="{StaticResource UintEntryEV}" Value="{Binding Data.EV_SPA}" Completed="HandleEV" x:Name="EV_SPA"/>
+                            <xForms:SfNumericTextBox Grid.Row="5" Grid.Column="2" Style="{StaticResource UintEntryEV}" Value="{Binding Data.EV_SPD}" Completed="HandleEV" x:Name="EV_SPD"/>
+                            <xForms:SfNumericTextBox Grid.Row="6" Grid.Column="2" Style="{StaticResource UintEntryEV}" Value="{Binding Data.EV_SPE}" Completed="HandleEV" x:Name="EV_SPE"/>
+                        </Grid>
+                    </ScrollView>
+                </tabView:SfTabItem.Content>
+            </tabView:SfTabItem>
+
+            <tabView:SfTabItem Title="OT/Misc">
+                <tabView:SfTabItem.Content>
+                    <ScrollView Padding="16">
+                    <StackLayout>
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                            <Label x:Name="L_OT" VerticalTextAlignment="Center" Text="OT"></Label>
+                            <Entry x:Name="TB_OT" WidthRequest="180" Text="{Binding OT_Name}" MaxLength="{Binding Data.OTLength}"></Entry>
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                            <Label x:Name="L_TID" VerticalTextAlignment="Center" Text="TID"></Label>
+                            <xForms:SfNumericTextBox Style="{StaticResource UintEntry65535}" Value="{Binding Data.TID}" Completed="HandleID" x:Name="TB_TID"/>
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="Center" IsVisible="{Binding FeatureFlags.SID}">
+                            <Label x:Name="L_SID" VerticalTextAlignment="Center" Text="SID"></Label>
+                            <xForms:SfNumericTextBox Style="{StaticResource UintEntry65535}" Value="{Binding Data.SID}" Completed="HandleID" x:Name="TB_SID"/>
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="Center" IsVisible="{Binding FeatureFlags.Handler}">
+                            <Label x:Name="L_HT" VerticalTextAlignment="Center" Text="HT"></Label>
+                            <Entry x:Name="TB_HT" WidthRequest="180" Text="{Binding HT_Name}" MaxLength="{Binding Data.OTLength}"></Entry>
+                        </StackLayout>
+                    </StackLayout>
+                    </ScrollView>
+                </tabView:SfTabItem.Content>
+            </tabView:SfTabItem>
+        </tabView:SfTabView>
+
+    </StackLayout>
+
+</ContentPage>

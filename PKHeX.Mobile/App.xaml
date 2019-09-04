@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Application xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="PKHeX.App">
+    <Application.Resources>
+        <DataTemplate x:Key="LoadableSAVTemplate" >
+            <Grid Padding="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <Image Grid.RowSpan="3" 
+                       Source="{Binding ImageUrl}" 
+                       Aspect="AspectFit"
+                       HeightRequest="80" 
+                       WidthRequest="80" />
+
+                <Label Grid.Row="0" Grid.Column="1" 
+                       Text="{Binding TrainerName, StringFormat='Player: {0}'}"
+                       FontAttributes="Bold"
+                       FontSize="Micro"/>
+                <Label Grid.Row="1" Grid.Column="1" 
+                       Text="{Binding PlayTime, StringFormat='Play Time: {0}'}"
+                       FontSize="Micro" />
+                <Label Grid.Row="2" Grid.Column="1" 
+                       Text="{Binding Game}"
+                       FontAttributes="Bold" 
+                       FontSize="Micro" />
+            </Grid>
+        </DataTemplate>
+    </Application.Resources>
+</Application>

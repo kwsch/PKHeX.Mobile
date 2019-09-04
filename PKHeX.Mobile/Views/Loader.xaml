@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             xmlns:vm="clr-namespace:PKHeX.ViewModels"
+             Title="Main Menu"
+             x:Class="PKHeX.Mobile.Views.Loader">
+    
+    <ContentPage.BindingContext>
+        <vm:LoadableViewModel x:Name="VM"/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+        <StackLayout x:Name="SL_Main">
+            <StackLayout Orientation="Horizontal" Margin="20">
+                <Button Text="Cache New Save"
+                        x:Name="B_Cache"
+                        VerticalOptions="CenterAndExpand" 
+                        HorizontalOptions="StartAndExpand" 
+                        Clicked="TgrCacheTapped"/>
+                <Button Text="Open Selected Save"
+                        x:Name="B_Open"
+                        VerticalOptions="CenterAndExpand" 
+                        HorizontalOptions="EndAndExpand"
+                        IsVisible="False"
+                        Clicked="TgrOpenTapped"/>
+            </StackLayout>
+            <CollectionView Margin="20"
+                            x:Name="CV_Saves"
+                            ItemsSource="{Binding Saves}"
+                            ItemTemplate="{StaticResource LoadableSAVTemplate}"
+                            SelectionMode="Single"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
