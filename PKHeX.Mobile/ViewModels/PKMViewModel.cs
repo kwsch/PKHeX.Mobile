@@ -59,7 +59,7 @@ namespace PKHeX.ViewModels
 
         private void RefreshForms()
         {
-            var list = PKX.GetFormList(species, GameInfo.Strings.types, GameInfo.Strings.forms, GameInfo.GenderSymbolASCII, Data.Format);
+            var list = FormConverter.GetFormList(species, GameInfo.Strings.types, GameInfo.Strings.forms, GameInfo.GenderSymbolASCII, Data.Format);
             Forms = new ObservableCollection<string>(list);
         }
 
@@ -429,7 +429,7 @@ namespace PKHeX.ViewModels
             int lang = GameLanguage.GetLanguageIndex(GameInfo.CurrentLanguage);
             if (lang <= 0)
                 lang = (int)LanguageID.English;
-            return PKX.GetSpeciesName(pkm.Species, lang);
+            return SpeciesName.GetSpeciesName(pkm.Species, lang);
         }
     }
 }

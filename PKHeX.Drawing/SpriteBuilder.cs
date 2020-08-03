@@ -47,8 +47,8 @@ namespace PKHeX.Drawing
             if (img != null) return img;
             return LoadBitmapResource($"games.{game.ToString()}");
         }
-        
-        public SKBitmap GetSprite(int species, int form, int gender, int heldItem, bool isEgg, bool isShiny, int generation = -1, bool isBoxBGRed = false)
+
+        public SKBitmap GetSprite(int species, int form, int gender, uint formarg, int heldItem, bool isEgg, bool isShiny, int generation = -1, bool isBoxBGRed = false, bool isAltShiny = false)
         {
             if (species == 0)
                 return LoadBitmapResource("pkm.0");
@@ -56,12 +56,12 @@ namespace PKHeX.Drawing
             if (generation == 3 && species == 386) // Deoxys, special consideration for Gen3 save files
                 form = GetDeoxysForm(Game);
 
-            var baseImage = GetBaseImage(species, form, gender, isShiny, generation);
+            var baseImage = GetBaseImage(species, form, gender, formarg, isShiny, generation);
 
             return GetSprite(baseImage, species, heldItem, isEgg, isShiny, generation, isBoxBGRed);
         }
 
-        public SKBitmap GetSprite(SKBitmap baseSprite, int species, int heldItem, bool isEgg, bool isShiny, int generation = -1, bool isBoxBGRed = false)
+        public SKBitmap GetSprite(SKBitmap baseSprite, int species, int heldItem, bool isEgg, bool isShiny, int generation = -1, bool isBoxBGRed = false, bool isAltShiny = false)
         {
             if (isEgg)
                 baseSprite = LayerOverImageEgg(baseSprite, species, heldItem != 0);
@@ -72,34 +72,34 @@ namespace PKHeX.Drawing
             return baseSprite;
         }
 
-        private static SKBitmap GetBaseImage(int species, int form, int gender, bool shiny, int generation)
+        private static SKBitmap GetBaseImage(int species, int form, int gender, uint formarg, bool shiny, int generation)
         {
-            var img = FormConverter.IsTotemForm(species, form)
-                        ? GetBaseImageTotem(species, form, gender, shiny, generation)
-                        : GetBaseImageDefault(species, form, gender, shiny, generation);
-            return img ?? GetBaseImageFallback(species, form, gender, shiny, generation);
+            var img = FormConverter.IsTotemForm(species, form, generation)
+                        ? GetBaseImageTotem(species, form, gender, formarg, shiny, generation)
+                        : GetBaseImageDefault(species, form, gender, formarg, shiny, generation);
+            return img ?? GetBaseImageFallback(species, form, gender, formarg, shiny, generation);
         }
 
-        private static SKBitmap GetBaseImageTotem(int species, int form, int gender, bool shiny, int generation)
+        private static SKBitmap GetBaseImageTotem(int species, int form, int gender, uint formarg, bool shiny, int generation)
         {
             var baseform = FormConverter.GetTotemBaseForm(species, form);
-            var baseImage = GetBaseImageDefault(species, baseform, gender, shiny, generation);
+            var baseImage = GetBaseImageDefault(species, baseform, gender, formarg, shiny, generation);
             return ImageUtil.ToGrayscale(baseImage);
         }
 
-        private static SKBitmap GetBaseImageDefault(int species, int form, int gender, bool shiny, int generation)
+        private static SKBitmap GetBaseImageDefault(int species, int form, int gender, uint formarg, bool shiny, int generation)
         {
-            var file = PKX.GetResourceStringSprite(species, form, gender, generation, shiny).Substring(1);
+            var file = SpriteName.GetResourceStringSprite(species, form, gender, formarg, generation, shiny).Substring(1);
             if (shiny)
                 return LoadBitmapResource("pkms." + file + "s");
             return LoadBitmapResource("pkm." + file);
         }
 
-        private static SKBitmap GetBaseImageFallback(int species, int form, int gender, bool shiny, int generation)
+        private static SKBitmap GetBaseImageFallback(int species, int form, int gender, uint formarg, bool shiny, int generation)
         {
             if (shiny) // try again without shiny
             {
-                var img = GetBaseImageDefault(species, form, gender, false, generation);
+                var img = GetBaseImageDefault(species, form, gender, formarg, false, generation);
                 if (img != null)
                     return img;
             }

@@ -9,13 +9,13 @@ namespace PKHeX.Drawing
 
         public static SKBitmap GetBallSprite(int ball)
         {
-            string resource = PKX.GetResourceStringBall(ball);
+            string resource = SpriteName.GetResourceStringBall(ball);
             return SpriteBuilder.LoadBitmapResource("ball." + resource) ?? SpriteBuilder.LoadBitmapResource("ball._ball4"); // Poké Ball (default)
         }
 
-        public static SKBitmap GetSprite(int species, int form, int gender, int item, bool isegg, bool shiny, int generation = -1, bool isBoxBGRed = false)
+        public static SKBitmap GetSprite(int species, int form, int gender, uint formarg, int item, bool isegg, bool shiny, int generation = -1, bool isBoxBGRed = false)
         {
-            return Spriter.GetSprite(species, form, gender, item, isegg, shiny, generation, isBoxBGRed);
+            return Spriter.GetSprite(species, form, gender, formarg, item, isegg, shiny, generation, isBoxBGRed);
         }
 
         public static SKBitmap GetRibbonSprite(string name)
@@ -75,7 +75,7 @@ namespace PKHeX.Drawing
             if (gift.IsEgg && gift.Species == 490) // Manaphy Egg
                 return SpriteBuilder.LoadBitmapResource("pkm.490_e");
             if (gift.IsPokémon)
-                return GetSprite(gift.Species, gift.Form, gift.Gender, gift.HeldItem, gift.IsEgg, gift.IsShiny, gift.Format);
+                return GetSprite(gift.Species, gift.Form, gift.Gender, 0, gift.HeldItem, gift.IsEgg, gift.IsShiny, gift.Format);
             if (gift.IsItem)
             {
                 int item = gift.ItemID;
@@ -88,7 +88,8 @@ namespace PKHeX.Drawing
 
         private static SKBitmap GetSprite(PKM pk, bool isBoxBGRed = false)
         {
-            var img = GetSprite(pk.Species, pk.AltForm, pk.Gender, pk.SpriteItem, pk.IsEgg, pk.IsShiny, pk.Format, isBoxBGRed);
+            var formarg = pk is IFormArgument f ? f.FormArgument : 0;
+            var img = GetSprite(pk.Species, pk.AltForm, pk.Gender, formarg, pk.SpriteItem, pk.IsEgg, pk.IsShiny, pk.Format, isBoxBGRed);
             if (pk is IShadowPKM s && s.Purification > 0)
             {
                 const int Lugia = 249;
@@ -171,7 +172,8 @@ namespace PKHeX.Drawing
         public static void GetSpriteGlow(PKM pk, byte blue, byte green, byte red, out byte[] pixels, out SKBitmap baseSprite, bool forceHollow = false)
         {
             bool egg = pk.IsEgg;
-            baseSprite = GetSprite(pk.Species, pk.AltForm, pk.Gender, 0, egg, false, pk.Format);
+            var formarg = pk is IFormArgument f ? f.FormArgument : 0;
+            baseSprite = GetSprite(pk.Species, pk.AltForm, pk.Gender, formarg, 0, egg, false, pk.Format);
             GetSpriteGlow(baseSprite, blue, green, red, out pixels, forceHollow || egg);
         }
 
