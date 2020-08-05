@@ -1,7 +1,7 @@
-﻿using System;
-using System.Windows.Input;
-using PKHeX.Mobile.Logic;
+﻿using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
+using AppInfo = PKHeX.Mobile.Logic.AppInfo;
 
 namespace PKHeX.ViewModels
 {
@@ -11,7 +11,7 @@ namespace PKHeX.ViewModels
         {
             Title = "About PKHeX Mobile";
 
-            OpenWebCommand = new Command(() => Device.OpenUri(new Uri(AppInfo.GitHubLink)));
+            OpenWebCommand = new Command(async () => await Launcher.OpenAsync(AppInfo.GitHubLink).ConfigureAwait(false));
         }
 
         public ICommand OpenWebCommand { get; }
