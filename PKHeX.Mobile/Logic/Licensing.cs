@@ -16,7 +16,7 @@ namespace PKHeX.Mobile.Logic
             m.Invoke(null, new object[] { Decode(NothingImportant) });
         }
 
-        private const string NothingImportant = "TVRJMk1UUTJRRE14TXpjeVpUTXlNbVV6TUZOc1JFOVZXblJFUVZoS1ExcGFhblpJYzNWd09WbG9hakZwU2pWVVV6Tm5ia05VTUhob1dVWmtOVlU5";
+        private const string NothingImportant = "TWprNU5ESTVRRE14TXpneVpUTXlNbVV6TUc5emJuVnZOSEUxVUZwMVpHMU9hbko2U0RZeFJrdHFjbFExV0U5U2FVMUVNbklyVWtwR2VYaENiREE5";
         private static string Decode(string str) => Encoding.ASCII.GetString(Convert.FromBase64String(str));
         private static string Encode(string str) => Convert.ToBase64String(Encoding.ASCII.GetBytes(str));
     }
