@@ -42,14 +42,13 @@ namespace PKHeX.Drawing
 
             // Count ribbons
             string n = name.Replace("Count", string.Empty).ToLower();
-            switch (value)
+            return value switch
             {
-                case 2: return n + "super";
-                case 3: return n + "hyper";
-                case 4: return n + "master";
-                default:
-                    return n;
-            }
+                2 => (n + "super"),
+                3 => (n + "hyper"),
+                4 => (n + "master"),
+                _ => n
+            };
         }
 
         public static SKBitmap GetTypeSprite(int type, int generation = PKX.Generation)
@@ -147,8 +146,8 @@ namespace PKHeX.Drawing
         }
 
         private const int MaxSlotCount = 30; // slots in a box
-        private const int SpriteWidth = 40;
-        private const int SpriteHeight = 30;
+        private const int SpriteWidth = 68;
+        private const int SpriteHeight = 56;
         private const int PartyMarkShiftX = SpriteWidth - 16;
         private const int SlotLockShiftX = SpriteWidth - 14;
         private const int SlotTeamShiftX = SpriteWidth - 19;

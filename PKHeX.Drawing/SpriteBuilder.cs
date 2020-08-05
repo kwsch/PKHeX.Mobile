@@ -7,11 +7,12 @@ namespace PKHeX.Drawing
     {
         public static bool ShowEggSpriteAsItem { get; set; } = true;
 
-        private const int ItemShiftX = 22;
-        private const int ItemShiftY = 15;
-        private const int ItemMaxSize = 15;
-        private const int EggItemShiftX = 9;
-        private const int EggItemShiftY = 2;
+        private const int ItemShiftX = 52;
+        private const int ItemShiftY = 24;
+        private const int ItemMaxSize = 32;
+        private const int EggItemShiftX = 32;
+        private const int EggItemShiftY = 26;
+
         private const double UnknownFormTransparency = 0.5;
         private const double ShinyTransparency = 0.7;
         private const double EggUnderLayerTransparency = 0.33;
@@ -30,13 +31,13 @@ namespace PKHeX.Drawing
 
         private static int GetDeoxysForm(GameVersion game)
         {
-            switch (game)
+            return game switch
             {
-                default: return 0;
-                case GameVersion.FR: return 1; // Attack
-                case GameVersion.LG: return 2; // Defense
-                case GameVersion.E: return 3; // Speed
-            }
+                GameVersion.FR => 1, // Attack
+                GameVersion.LG => 2, // Defense
+                GameVersion.E => 3, // Speed
+                _ => 0
+            };
         }
 
         public static SKBitmap LoadBitmapResource(string resourceID) => ResourceFetch.LoadBitmapResource(resourceID);
@@ -44,14 +45,13 @@ namespace PKHeX.Drawing
         public static SKBitmap GetGameIcon(GameVersion game)
         {
             var img = LoadBitmapResource($"games.{(int)game}");
-            if (img != null) return img;
-            return LoadBitmapResource($"games.{game.ToString()}");
+            return img ?? LoadBitmapResource($"games.{game}");
         }
 
         public SKBitmap GetSprite(int species, int form, int gender, uint formarg, int heldItem, bool isEgg, bool isShiny, int generation = -1, bool isBoxBGRed = false, bool isAltShiny = false)
         {
             if (species == 0)
-                return LoadBitmapResource("pkm.0");
+                return LoadBitmapResource("pkm.b_0");
 
             if (generation == 3 && species == 386) // Deoxys, special consideration for Gen3 save files
                 form = GetDeoxysForm(Game);
@@ -91,8 +91,8 @@ namespace PKHeX.Drawing
         {
             var file = SpriteName.GetResourceStringSprite(species, form, gender, formarg, generation, shiny).Substring(1);
             if (shiny)
-                return LoadBitmapResource("pkms." + file + "s");
-            return LoadBitmapResource("pkm." + file);
+                return LoadBitmapResource($"pkms.b_{file}s");
+            return LoadBitmapResource($"pkm.b_{file}");
         }
 
         private static SKBitmap GetBaseImageFallback(int species, int form, int gender, uint formarg, bool shiny, int generation)
@@ -105,10 +105,10 @@ namespace PKHeX.Drawing
             }
 
             // try again without form
-            var baseImage = LoadBitmapResource($"pkm.{species}");
+            var baseImage = LoadBitmapResource($"pkm.b_{species}");
             if (baseImage == null) // failed again
-                return LoadBitmapResource("pkm.unknown");
-            return ImageUtil.LayerImage(baseImage, LoadBitmapResource("pkm.unknown"), 0, 0, UnknownFormTransparency);
+                return LoadBitmapResource("pkm.b_0");
+            return ImageUtil.LayerImage(baseImage, LoadBitmapResource("pkm.b_0"), 0, 0, UnknownFormTransparency);
         }
 
         private static SKBitmap LayerOverImageItem(SKBitmap baseImage, int item, int generation)
@@ -140,7 +140,7 @@ namespace PKHeX.Drawing
             return LayerOverImageEggTransparentSpecies(baseImage, species);
         }
 
-        private static SKBitmap GetEggSprite(int species) => species == 490 ? LoadBitmapResource("pkm.490_e") : LoadBitmapResource("pkm.egg");
+        private static SKBitmap GetEggSprite(int _) => LoadBitmapResource("pkm.b_0-1");
 
         private static SKBitmap LayerOverImageEggTransparentSpecies(SKBitmap baseImage, int species)
         {

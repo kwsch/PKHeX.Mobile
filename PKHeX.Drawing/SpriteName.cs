@@ -9,6 +9,7 @@ namespace PKHeX.Drawing
         public static bool AllowShinySprite { get; set; }
 
         private const string Separator = "_";
+        private const string FormSeparator = "-";
         private const string Cosplay = "c";
         private const string Shiny = "s";
         private const string GGStarter = "p";
@@ -31,7 +32,7 @@ namespace PKHeX.Drawing
 
             if (form != 0)
             {
-                sb.Append(Separator).Append(form);
+                sb.Append(FormSeparator).Append(form);
 
                 if (species == (int)Species.Pikachu)
                 {
@@ -54,8 +55,8 @@ namespace PKHeX.Drawing
             if (species == (int)Species.Alcremie)
             {
                 if (form == 0)
-                    sb.Append(Separator).Append(form);
-                sb.Append(Separator).Append(formarg);
+                    sb.Append(FormSeparator).Append(form);
+                sb.Append(FormSeparator).Append(formarg);
             }
 
             if (shiny && AllowShinySprite)

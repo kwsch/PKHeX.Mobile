@@ -15,18 +15,17 @@ namespace PKHeX.Drawing
         {
             try
             {
-                // var all = A.GetManifestResourceNames();
+                var all = A.GetManifestResourceNames();
                 var file = $"{ResourcePrefix}.Images.{resourceID}.png";
                 if (Dict.TryGetValue(file, out var val))
                     return val;
-                using (var stream = A.GetManifestResourceStream(file))
-                {
-                    if (stream == null)
-                        return null;
-                    val = SKBitmap.Decode(stream);
-                    Dict.Add(file, val);
-                    return val;
-                }
+
+                using var stream = A.GetManifestResourceStream(file);
+                if (stream == null)
+                    return null;
+                val = SKBitmap.Decode(stream);
+                Dict.Add(file, val);
+                return val;
             }
             catch
             {
