@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using PKHeX.Mobile.Logic;
 using PKHeX.ViewModels;
 using Xamarin.Forms;
@@ -80,8 +81,10 @@ namespace PKHeX.Mobile.Views
             VM.Version = BindingUtil.GetValue(CB_Version.SelectedValue);
 
             // binding annoyances
-            CB_Met_Location.SelectedItem = VM.MetLocations[VM.MetLocation = 0];
-            CB_Egg_Location.SelectedItem = VM.EggLocations[VM.EggLocation = 0];
+            var met = VM.MetLocations.Any(z => z.Value == VM.MetLocation) ? VM.MetLocation : 0;
+            var egg = VM.EggLocations.Any(z => z.Value == VM.EggLocation) ? VM.EggLocation : 0;
+            CB_Met_Location.SelectedItem = VM.MetLocations[VM.MetLocation = met];
+            CB_Egg_Location.SelectedItem = VM.EggLocations[VM.EggLocation = egg];
         }
 
         private void CB_Species_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
