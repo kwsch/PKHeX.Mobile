@@ -9326,6 +9326,7 @@ namespace PKHeX.Droid
 			global::Xamarin.Forms.Platform.Android.Resource.String.fab_transformation_sheet_behavior = global::PKHeX.Droid.Resource.String.fab_transformation_sheet_behavior;
 			global::Xamarin.Forms.Platform.Android.Resource.String.hide_bottom_view_on_scroll_behavior = global::PKHeX.Droid.Resource.String.hide_bottom_view_on_scroll_behavior;
 			global::Xamarin.Forms.Platform.Android.Resource.String.mtrl_chip_close_icon_content_description = global::PKHeX.Droid.Resource.String.mtrl_chip_close_icon_content_description;
+			global::Xamarin.Forms.Platform.Android.Resource.String.overflow_tab_title = global::PKHeX.Droid.Resource.String.overflow_tab_title;
 			global::Xamarin.Forms.Platform.Android.Resource.String.password_toggle_content_description = global::PKHeX.Droid.Resource.String.password_toggle_content_description;
 			global::Xamarin.Forms.Platform.Android.Resource.String.path_password_eye = global::PKHeX.Droid.Resource.String.path_password_eye;
 			global::Xamarin.Forms.Platform.Android.Resource.String.path_password_eye_mask_strike_through = global::PKHeX.Droid.Resource.String.path_password_eye_mask_strike_through;
@@ -11895,6 +11896,7 @@ namespace PKHeX.Droid
 			global::Xamarin.Forms.Platform.Resource.String.fab_transformation_sheet_behavior = global::PKHeX.Droid.Resource.String.fab_transformation_sheet_behavior;
 			global::Xamarin.Forms.Platform.Resource.String.hide_bottom_view_on_scroll_behavior = global::PKHeX.Droid.Resource.String.hide_bottom_view_on_scroll_behavior;
 			global::Xamarin.Forms.Platform.Resource.String.mtrl_chip_close_icon_content_description = global::PKHeX.Droid.Resource.String.mtrl_chip_close_icon_content_description;
+			global::Xamarin.Forms.Platform.Resource.String.overflow_tab_title = global::PKHeX.Droid.Resource.String.overflow_tab_title;
 			global::Xamarin.Forms.Platform.Resource.String.password_toggle_content_description = global::PKHeX.Droid.Resource.String.password_toggle_content_description;
 			global::Xamarin.Forms.Platform.Resource.String.path_password_eye = global::PKHeX.Droid.Resource.String.path_password_eye;
 			global::Xamarin.Forms.Platform.Resource.String.path_password_eye_mask_strike_through = global::PKHeX.Droid.Resource.String.path_password_eye_mask_strike_through;
@@ -18503,25 +18505,28 @@ namespace PKHeX.Droid
 			public const int mtrl_chip_close_icon_content_description = 2131558471;
 			
 			// aapt resource value: 0x7F0D0048
-			public const int password_toggle_content_description = 2131558472;
+			public const int overflow_tab_title = 2131558472;
 			
 			// aapt resource value: 0x7F0D0049
-			public const int path_password_eye = 2131558473;
+			public const int password_toggle_content_description = 2131558473;
 			
 			// aapt resource value: 0x7F0D004A
-			public const int path_password_eye_mask_strike_through = 2131558474;
+			public const int path_password_eye = 2131558474;
 			
 			// aapt resource value: 0x7F0D004B
-			public const int path_password_eye_mask_visible = 2131558475;
+			public const int path_password_eye_mask_strike_through = 2131558475;
 			
 			// aapt resource value: 0x7F0D004C
-			public const int path_password_strike_through = 2131558476;
+			public const int path_password_eye_mask_visible = 2131558476;
 			
 			// aapt resource value: 0x7F0D004D
-			public const int search_menu_title = 2131558477;
+			public const int path_password_strike_through = 2131558477;
 			
 			// aapt resource value: 0x7F0D004E
-			public const int status_bar_notification_info_overflow = 2131558478;
+			public const int search_menu_title = 2131558478;
+			
+			// aapt resource value: 0x7F0D004F
+			public const int status_bar_notification_info_overflow = 2131558479;
 			
 			static String()
 			{
