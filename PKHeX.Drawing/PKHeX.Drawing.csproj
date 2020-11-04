@@ -6943,7 +6943,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="PKHeX.Core" Version="20.8.7" />
+    <PackageReference Include="PKHeX.Core" Version="20.10.31" />
     <PackageReference Include="SkiaSharp" Version="2.80.1" />
     <PackageReference Include="SkiaSharp.QrCode" Version="0.3.2" />
   </ItemGroup>

@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <PackageReference Include="Acr.UserDialogs" Version="7.1.0.446" />
-    <PackageReference Include="PKHeX.Core" Version="20.8.7" />
+    <PackageReference Include="PKHeX.Core" Version="20.10.31" />
     <PackageReference Include="PropertyChanged.Fody" Version="3.2.8" />
     <PackageReference Include="Refractored.MvvmHelpers" Version="1.6.2" />
     <PackageReference Include="SkiaSharp" Version="2.80.1" />
