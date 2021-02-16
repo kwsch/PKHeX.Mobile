@@ -22,7 +22,7 @@ namespace PKHeX.ViewModels
             else
             {
                 var filteredItems = Saves
-                    .Where(bear => bear.File.FileName.IndexOf(query, System.StringComparison.OrdinalIgnoreCase) >= 0)
+                    .Where(bear => bear.File.Metadata.FileName.IndexOf(query, System.StringComparison.OrdinalIgnoreCase) >= 0)
                     .ToList();
                 Filtered = new ObservableCollection<LoadableSAV>(filteredItems);
             }

@@ -25,7 +25,7 @@ namespace PKHeX.Mobile.Views
             var img = QRBuilder.GetQR(pkm, (int)(width * 0.8));
             QR.Source = (SKBitmapImageSource)img;
 
-            Desc.Text = ShowdownSet.GetShowdownText(pkm);
+            Desc.Text = ShowdownParsing.GetShowdownText(pkm);
         }
     }
 }

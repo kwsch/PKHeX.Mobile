@@ -41,7 +41,7 @@ namespace PKHeX.Mobile.Views
                 return;
             }
 
-            var match = VM.Saves.FirstOrDefault(z => z.LocatedAt(sav.FilePath));
+            var match = VM.Saves.FirstOrDefault(z => z.LocatedAt(sav.Metadata.FilePath));
             if (match != null)
                 CV_Saves.SelectedItem = match;
             else
@@ -67,7 +67,7 @@ namespace PKHeX.Mobile.Views
 
             Device.BeginInvokeOnMainThread(() =>
             {
-                var l = new LoadableSAV(sav.FilePath, sav);
+                var l = new LoadableSAV(sav.Metadata.FilePath, sav);
                 TrainerSettings.Register(sav);
                 VM.Saves.Add(l);
                 CV_Saves.SelectedItem = l;
@@ -78,7 +78,7 @@ namespace PKHeX.Mobile.Views
         private async Task Open(LoadableSAV l)
         {
             var sav = l.File;
-            sav.Edited = true;
+            sav.State.Edited = true;
             var ed = new SaveEditor();
             var binding = (SaveFileViewModel)ed.BindingContext;
             binding.Initialize(sav);

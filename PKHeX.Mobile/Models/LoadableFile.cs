@@ -7,8 +7,8 @@ namespace PKHeX.Mobile.Models
 {
     public class LoadableSAV
     {
-        public string Name => System.IO.Path.GetFileName(File.FilePath);
-        public string Info => File.FileFolder;
+        public string Name => System.IO.Path.GetFileName(File.Metadata.FilePath);
+        public string Info => File.Metadata.FileFolder;
         public string TrainerName => File.OT;
         public string PlayTime => File.PlayTimeString;
         public string Game => GameInfo.GetVersionName(File.Version);

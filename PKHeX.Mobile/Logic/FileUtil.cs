@@ -39,7 +39,7 @@ namespace PKHeX.Mobile.Logic
 
                 var data = File.ReadAllBytes(path);
                 var sav = SaveUtil.GetVariantSAV(data);
-                sav?.SetFileInfo(path);
+                sav?.Metadata.SetExtraInfo(path);
                 return sav;
             }
             catch (FileNotFoundException ex)
@@ -56,23 +56,23 @@ namespace PKHeX.Mobile.Logic
 
         public static async Task<bool> ExportSAV(SaveFile sav)
         {
-            if (!sav.Exportable)
+            if (!sav.State.Exportable)
             {
                 await UserDialogs.Instance.AlertAsync("Can't export the current save file.").ConfigureAwait(false);
                 return false;
             }
 
             var data = sav.Write();
-            var path = sav.FilePath;
+            var path = sav.Metadata.FilePath;
             try
             {
                 var docPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
                 var bakPath = Path.Combine(docPath, "PKHeX Backups");
                 Directory.CreateDirectory(bakPath);
 
-                var bakName = Path.Combine(bakPath, Util.CleanFileName(sav.BAKName));
-                if (sav.Exportable && Directory.Exists(bakPath) && !File.Exists(bakName))
-                    File.WriteAllBytes(bakName, sav.BAK);
+                var bakName = Path.Combine(bakPath, Util.CleanFileName(sav.Metadata.BAKName));
+                if (sav.State.Exportable && Directory.Exists(bakPath) && !File.Exists(bakName))
+                    File.WriteAllBytes(bakName, sav.State.BAK);
                 bool success = File.Exists(bakName);
                 Console.WriteLine($"Backed up: {success}");
 

@@ -8,13 +8,13 @@ namespace PKHeX.Mobile.Logic
         public static string GetProgramTitle(SaveFile sav)
         {
             string title = $"{sav.GetType().Name}: ";
-            if (!sav.Exportable) // Blank save file
+            if (!sav.State.Exportable) // Blank save file
             {
                 var ver = GameInfo.GetVersionName(sav.Version);
                 return title + $" [{sav.OT} ({ver})]";
             }
 
-            var bakname = sav.BAKName;
+            var bakname = sav.Metadata.BAKName;
             bakname = bakname.Substring(bakname.IndexOf('[')); // trim off filename
             return title + Path.GetFileNameWithoutExtension(bakname); // trim off ext
         }

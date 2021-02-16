@@ -263,7 +263,7 @@ namespace PKHeX.Mobile.Views
         protected override bool OnBackButtonPressed()
         {
             var mdl = VM;
-            if (mdl.SAV.Edited)
+            if (mdl.SAV.State.Edited)
             {
                 bool exit = true;
                 var config = new ConfirmConfig
@@ -380,7 +380,7 @@ namespace PKHeX.Mobile.Views
             var sav = VM.SAV;
 
             var items = sav.Inventory;
-            if (items.Length == 0)
+            if (items.Count == 0)
             {
                 UserDialogs.Instance.Alert("Save file does not have an editable Inventory!");
                 return;
@@ -457,7 +457,7 @@ namespace PKHeX.Mobile.Views
         {
             try
             {
-                await Clipboard.SetTextAsync(ShowdownSet.GetShowdownText(VM.Pane)).ConfigureAwait(false);
+                await Clipboard.SetTextAsync(ShowdownParsing.GetShowdownText(VM.Pane)).ConfigureAwait(false);
                 await UserDialogs.Instance
                     .AlertAsync("Set the exported Showdown Set to the device clipboard!")
                     .ConfigureAwait(false);

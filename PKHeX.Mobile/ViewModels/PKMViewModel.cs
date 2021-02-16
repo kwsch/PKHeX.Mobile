@@ -37,7 +37,7 @@ namespace PKHeX.ViewModels
         private void LoadPKMFields()
         {
             species = Data.Species;
-            form = Data.AltForm;
+            form = Data.Form;
             abilIndex = Data.AbilityNumber >> 1;
             level = Data.CurrentLevel;
             item = Data.HeldItem;
@@ -205,7 +205,7 @@ namespace PKHeX.ViewModels
             {
                 if (!SetProperty(ref form, value))
                     return;
-                Data.AltForm = value;
+                Data.Form = value;
                 ChangeForm();
             }
         }

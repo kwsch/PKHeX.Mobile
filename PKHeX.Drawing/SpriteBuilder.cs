@@ -74,7 +74,7 @@ namespace PKHeX.Drawing
 
         private static SKBitmap GetBaseImage(int species, int form, int gender, uint formarg, bool shiny, int generation)
         {
-            var img = FormConverter.IsTotemForm(species, form, generation)
+            var img = FormInfo.IsTotemForm(species, form, generation)
                         ? GetBaseImageTotem(species, form, gender, formarg, shiny, generation)
                         : GetBaseImageDefault(species, form, gender, formarg, shiny, generation);
             return img ?? GetBaseImageFallback(species, form, gender, formarg, shiny, generation);
@@ -82,7 +82,7 @@ namespace PKHeX.Drawing
 
         private static SKBitmap GetBaseImageTotem(int species, int form, int gender, uint formarg, bool shiny, int generation)
         {
-            var baseform = FormConverter.GetTotemBaseForm(species, form);
+            var baseform = FormInfo.GetTotemBaseForm(species, form);
             var baseImage = GetBaseImageDefault(species, baseform, gender, formarg, shiny, generation);
             return ImageUtil.ToGrayscale(baseImage);
         }

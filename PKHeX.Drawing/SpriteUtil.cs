@@ -74,7 +74,7 @@ namespace PKHeX.Drawing
             if (gift.IsEgg && gift.Species == 490) // Manaphy Egg
                 return SpriteBuilder.LoadBitmapResource("pkm.490_e");
             if (gift.IsPokémon)
-                return GetSprite(gift.Species, gift.Form, gift.Gender, 0, gift.HeldItem, gift.IsEgg, gift.IsShiny, gift.Format);
+                return GetSprite(gift.Species, gift.Form, gift.Gender, 0, gift.HeldItem, gift.IsEgg, gift.IsShiny, gift.Generation);
             if (gift.IsItem)
             {
                 int item = gift.ItemID;
@@ -88,7 +88,7 @@ namespace PKHeX.Drawing
         private static SKBitmap GetSprite(PKM pk, bool isBoxBGRed = false)
         {
             var formarg = pk is IFormArgument f ? f.FormArgument : 0;
-            var img = GetSprite(pk.Species, pk.AltForm, pk.Gender, formarg, pk.SpriteItem, pk.IsEgg, pk.IsShiny, pk.Format, isBoxBGRed);
+            var img = GetSprite(pk.Species, pk.Form, pk.Gender, formarg, pk.SpriteItem, pk.IsEgg, pk.IsShiny, pk.Format, isBoxBGRed);
             if (pk is IShadowPKM s && s.Purification > 0)
             {
                 const int Lugia = 249;
@@ -172,7 +172,7 @@ namespace PKHeX.Drawing
         {
             bool egg = pk.IsEgg;
             var formarg = pk is IFormArgument f ? f.FormArgument : 0;
-            baseSprite = GetSprite(pk.Species, pk.AltForm, pk.Gender, formarg, 0, egg, false, pk.Format);
+            baseSprite = GetSprite(pk.Species, pk.Form, pk.Gender, formarg, 0, egg, false, pk.Format);
             GetSpriteGlow(baseSprite, blue, green, red, out pixels, forceHollow || egg);
         }
 

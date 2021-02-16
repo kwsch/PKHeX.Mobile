@@ -89,8 +89,8 @@ namespace PKHeX.ViewModels
         public string ShowdownText {
             get
             {
-                if (selected == null) return ShowdownSet.GetShowdownText(pane);
-                return ShowdownSet.GetShowdownText(selected);
+                if (selected == null) return ShowdownParsing.GetShowdownText(pane);
+                return ShowdownParsing.GetShowdownText(selected);
             }
         }
 
