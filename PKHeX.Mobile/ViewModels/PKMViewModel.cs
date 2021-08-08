@@ -69,7 +69,7 @@ namespace PKHeX.ViewModels
             Abilities = new ObservableCollection<ComboObject>(list);
         }
 
-        public SaveFileViewModel SVM { get; private set; }
+        public SaveFileViewModel SVM { get; }
 
         public SaveFile SAV { get; private set; }
         public PKM Data { get; private set; }

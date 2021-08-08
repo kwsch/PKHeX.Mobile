@@ -137,10 +137,10 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="SkiaSharp.Views">
-      <Version>2.80.2</Version>
+      <Version>2.80.3</Version>
     </PackageReference>
     <PackageReference Include="SkiaSharp.Views.Forms">
-      <Version>2.80.2</Version>
+      <Version>2.80.3</Version>
     </PackageReference>
     <PackageReference Include="Syncfusion.Xamarin.Expander">
       <Version>18.2.0.47</Version>
@@ -154,8 +154,8 @@
     <PackageReference Include="Syncfusion.Xamarin.SfTabView">
       <Version>18.2.0.47</Version>
     </PackageReference>
-    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2012" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2083" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
     <PackageReference Include="ZXing.Net.Mobile">
       <Version>2.4.1</Version>
     </PackageReference>

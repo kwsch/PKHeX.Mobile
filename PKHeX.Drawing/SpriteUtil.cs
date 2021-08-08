@@ -105,7 +105,7 @@ namespace PKHeX.Drawing
         private static SKBitmap GetWallpaper(SaveFile sav, int box)
         {
             string s = BoxWallpaper.GetWallpaperResourceName(sav.Version, sav.GetBoxWallpaper(box));
-            var folder = s.Substring(8);
+            var folder = s[8..];
             s = $"box.{folder}.{s}";
             return SpriteBuilder.LoadBitmapResource(s) ?? SpriteBuilder.LoadBitmapResource("box.xy.box_wp16xy");
         }
@@ -121,9 +121,7 @@ namespace PKHeX.Drawing
 
             if (!empty && flagIllegal)
             {
-                if (box >= 0)
-                    pk.Box = box;
-                var la = new LegalityAnalysis(pk, sav.Personal);
+                var la = new LegalityAnalysis(pk, sav.Personal, box != -1 ? SlotOrigin.Box : SlotOrigin.Party);
                 if (!la.Valid)
                     sprite = ImageUtil.LayerImage(sprite, SpriteBuilder.LoadBitmapResource("warn"), 0, FlagIllegalShiftY);
             }

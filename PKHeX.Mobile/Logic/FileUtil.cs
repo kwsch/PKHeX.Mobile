@@ -5,41 +5,40 @@ using System.Threading.Tasks;
 using PKHeX.Core;
 
 using Acr.UserDialogs;
-using Plugin.FilePicker;
+using Xamarin.Essentials;
 
 namespace PKHeX.Mobile.Logic
 {
     // todo: rename this class to not clash with PKHeX.Core
     public static class FileUtil
     {
-        public static async Task<string> PickFile(params string[] ext)
+        public static async Task<FileResult> PickFile(params string[] ext)
         {
-            using (var fileData = await CrossFilePicker.Current.PickFile(ext).ConfigureAwait(false))
-            {
-                if (fileData == null)
-                    return null; // user canceled file picking
-                Debug.WriteLine($"File name chosen: {fileData.FileName}");
-                return fileData.FilePath;
-            }
+            var fileData = await FilePicker.PickAsync(PickOptions.Default).ConfigureAwait(false);
+            if (fileData == null)
+                return null; // user canceled file picking
+            Debug.WriteLine($"File name chosen: {fileData.FileName}");
+            return fileData;
         }
 
         public static async Task<SaveFile> TryGetSaveFile()
         {
             try
             {
-                var path = await PickFile().ConfigureAwait(false);
-                if (path == null)
+                var file = await PickFile().ConfigureAwait(false);
+                if (file == null)
                     return null;
 
-                var fi = new FileInfo(path);
-                var len = fi.Length;
+                await using var stream = await file.OpenReadAsync();
+                var len = stream.Length;
                 bool isPossibleSAV = SaveUtil.IsSizeValid((int) len);
                 if (!isPossibleSAV)
                     return null;
 
-                var data = File.ReadAllBytes(path);
+                var data = new byte[len];
+                stream.Read(data);
                 var sav = SaveUtil.GetVariantSAV(data);
-                sav?.Metadata.SetExtraInfo(path);
+                sav?.Metadata.SetExtraInfo(file.FullPath);
                 return sav;
             }
             catch (FileNotFoundException ex)
@@ -92,7 +91,7 @@ namespace PKHeX.Mobile.Logic
             try
             {
                 var fat = File.GetAttributes(path);
-                return fat.HasFlag(FileAttributes.ReadOnly);
+                return (fat & FileAttributes.ReadOnly) != 0;
             }
             catch { return true; }
         }

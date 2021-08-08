@@ -10,7 +10,7 @@
       "PKHeX.Core.AutoMod/1.0.0": {
         "dependencies": {
           "NETStandard.Library": "2.0.3",
-          "PKHeX.Core": "21.5.21"
+          "PKHeX.Core": "21.8.6"
         },
         "runtime": {
           "PKHeX.Core.AutoMod.dll": {}
@@ -30,7 +30,7 @@
           "Microsoft.NETCore.Platforms": "1.1.0"
         }
       },
-      "PKHeX.Core/21.5.21": {
+      "PKHeX.Core/21.8.6": {
         "dependencies": {
           "IndexRange": "1.0.0",
           "System.Memory": "4.5.4"
@@ -108,12 +108,12 @@
       "path": "netstandard.library/2.0.3",
       "hashPath": "netstandard.library.2.0.3.nupkg.sha512"
     },
-    "PKHeX.Core/21.5.21": {
+    "PKHeX.Core/21.8.6": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-YZjmZIhjjQ82RETm/VDR1bzIPf4A1+i0MvDIJglyA4ODKWZWG2iL3uQc8w8TRW8gCPm0SKuEcPBbHuZXgGE0zw==",
-      "path": "pkhex.core/21.5.21",
-      "hashPath": "pkhex.core.21.5.21.nupkg.sha512"
+      "sha512": "sha512-+thvoksr+Ezb+TGAFFCUquMKkTyuhASnUW6grfyMBikX2TLtLKJFqH2f0Gpq3Q7W4v3xwqprG0TaJD7lYyzfzA==",
+      "path": "pkhex.core/21.8.6",
+      "hashPath": "pkhex.core.21.8.6.nupkg.sha512"
     },
     "System.Buffers/4.5.1": {
       "type": "package",

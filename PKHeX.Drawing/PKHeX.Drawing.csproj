@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <LangVersion>8</LangVersion>
   </PropertyGroup>
 
@@ -6943,8 +6943,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="PKHeX.Core" Version="21.5.21" />
-    <PackageReference Include="SkiaSharp" Version="2.80.2" />
+    <PackageReference Include="PKHeX.Core" Version="21.8.6" />
+    <PackageReference Include="SkiaSharp" Version="2.80.3" />
     <PackageReference Include="SkiaSharp.QrCode" Version="0.4.1" />
   </ItemGroup>
 

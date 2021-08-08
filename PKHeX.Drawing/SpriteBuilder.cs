@@ -89,7 +89,7 @@ namespace PKHeX.Drawing
 
         private static SKBitmap GetBaseImageDefault(int species, int form, int gender, uint formarg, bool shiny, int generation)
         {
-            var file = SpriteName.GetResourceStringSprite(species, form, gender, formarg, generation, shiny).Substring(1);
+            var file = SpriteName.GetResourceStringSprite(species, form, gender, formarg, generation, shiny)[1..];
             if (shiny)
                 return LoadBitmapResource($"pkms.b_{file}s");
             return LoadBitmapResource($"pkm.b_{file}");
