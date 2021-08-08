@@ -8,7 +8,7 @@ namespace PKHeX.ViewModels
 {
     public class LoadableViewModel : BaseViewModel
     {
-        public ObservableCollection<LoadableSAV> Saves { get; set; } = new();
+        public ObservableCollection<LoadableSAV> Saves { get; set; } = new ObservableCollection<LoadableSAV>();
         public ObservableCollection<LoadableSAV> Filtered { get; set; }
 
         public ICommand SearchCommand => new Command<string>(SearchItems);

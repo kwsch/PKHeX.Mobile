@@ -94,7 +94,7 @@ namespace PKHeX.ViewModels
             }
         }
 
-        public ObservableRangeCollection<string> BoxNames { get; } = new();
+        public ObservableRangeCollection<string> BoxNames { get; } = new ObservableRangeCollection<string>();
 
         public int CurrentBox
         {
