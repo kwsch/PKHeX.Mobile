@@ -29,6 +29,6 @@ steps:
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: PKHeX.Mobile'
   inputs:
-    PathtoPublish: 'PKHeX.Android\bin\Release'
+    pathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: PKHeX.Android
   condition: succeededOrFailed()
