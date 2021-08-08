@@ -78,7 +78,7 @@ namespace PKHeX.ViewModels
             get => selected;
             set
             {
-                if (selected == value)
+                if (ReferenceEquals(selected, value))
                     return;
                 selected = value;
             }
@@ -94,7 +94,7 @@ namespace PKHeX.ViewModels
             }
         }
 
-        public ObservableRangeCollection<string> BoxNames { get; } = new ObservableRangeCollection<string>();
+        public ObservableRangeCollection<string> BoxNames { get; } = new();
 
         public int CurrentBox
         {

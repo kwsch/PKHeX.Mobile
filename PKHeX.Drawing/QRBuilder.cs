@@ -33,21 +33,18 @@ namespace PKHeX.Drawing
         public static SKBitmap GetQR(PKM pkm, int dim = 365)
         {
             string content = GetQRMessage(pkm);
-            using (var generator = new QRCodeGenerator())
-            {
-                // Generate QrCode
-                var qr = generator.CreateQrCode(content, ECCLevel.H);
+            using var generator = new QRCodeGenerator();
 
-                // Render to canvas
-                var info = new SKImageInfo(dim, dim);
-                using (var surface = SKSurface.Create(info))
-                {
-                    var canvas = surface.Canvas;
-                    canvas.Render(qr, info.Width, info.Height);
+            // Generate QrCode
+            var qr = generator.CreateQrCode(content, ECCLevel.H);
 
-                    return SKBitmap.Decode(surface.Snapshot().Encode().AsStream());
-                }
-            }
+            // Render to canvas
+            var info = new SKImageInfo(dim, dim);
+            using var surface = SKSurface.Create(info);
+            var canvas = surface.Canvas;
+            canvas.Render(qr, info.Width, info.Height);
+
+            return SKBitmap.Decode(surface.Snapshot().Encode().AsStream());
         }
     }
 }

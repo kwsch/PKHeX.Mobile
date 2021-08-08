@@ -6,7 +6,7 @@
              xmlns:xForms="clr-namespace:Syncfusion.SfNumericTextBox.XForms;assembly=Syncfusion.SfNumericTextBox.XForms"
              xmlns:comboBox="clr-namespace:Syncfusion.XForms.ComboBox;assembly=Syncfusion.SfComboBox.XForms"
              xmlns:tabView="clr-namespace:Syncfusion.XForms.TabView;assembly=Syncfusion.SfTabView.XForms"
-             xmlns:generic="clr-namespace:System.Collections.Generic;assembly=netstandard"
+             xmlns:generic="clr-namespace:System.Collections.Generic;assembly=netstandard" xmlns:viewmodels="clr-namespace:PKHeX.ViewModels" x:DataType="viewmodels:PKMViewModel"
              mc:Ignorable="d"
              x:Class="PKHeX.Mobile.Views.PKMEditor"
              Title="{Binding Title}">

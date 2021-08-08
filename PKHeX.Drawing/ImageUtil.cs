@@ -23,8 +23,8 @@ namespace PKHeX.Drawing
                 return overLayer;
             var img = baseLayer.Copy();
             var rect = new SKRect(x, y, overLayer.Width + x, overLayer.Height + y);
-            using (var gr = new SKCanvas(img))
-                gr.DrawBitmap(overLayer, rect);
+            using var gr = new SKCanvas(img);
+            gr.DrawBitmap(overLayer, rect);
             return img;
         }
 

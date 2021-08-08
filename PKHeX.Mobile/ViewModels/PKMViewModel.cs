@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using PKHeX.Core;
-using PKHeX.Mobile.Logic;
 using SkiaSharp.Views.Forms;
 using Xamarin.Forms;
 
@@ -65,8 +64,8 @@ namespace PKHeX.ViewModels
 
         private void RefreshAbilities()
         {
-            var list = GameInfo.FilteredSources.GetAbilityList(Data).Convert();
-            Abilities = new ObservableCollection<ComboObject>(list);
+            var list = GameInfo.FilteredSources.GetAbilityList(Data);
+            Abilities = new ObservableCollection<ComboItem>(list);
         }
 
         public SaveFileViewModel SVM { get; }
@@ -77,10 +76,10 @@ namespace PKHeX.ViewModels
         public FeatureFlags FeatureFlags { get; private set; }
         public PersonalInfo Personal { get; private set; }
 
-        public ObservableCollection<ComboObject> MetLocations { get; set; }
-        public ObservableCollection<ComboObject> EggLocations { get; set; }
+        public ObservableCollection<ComboItem> MetLocations { get; set; }
+        public ObservableCollection<ComboItem> EggLocations { get; set; }
 
-        public ObservableCollection<ComboObject> Abilities { get; set; }
+        public ObservableCollection<ComboItem> Abilities { get; set; }
         public ObservableCollection<string> Forms { get; set; }
 
         public string PKMTitle => GetProgramTitle(Data);
@@ -417,8 +416,8 @@ namespace PKHeX.ViewModels
 
         private void RefreshMetLocations()
         {
-            MetLocations = new ObservableCollection<ComboObject>(GameInfo.GetLocationList((GameVersion)version, Data.Format).Convert());
-            EggLocations = new ObservableCollection<ComboObject>(GameInfo.GetLocationList((GameVersion)version, Data.Format, true).Convert());
+            MetLocations = new ObservableCollection<ComboItem>(GameInfo.GetLocationList((GameVersion)version, Data.Format));
+            EggLocations = new ObservableCollection<ComboItem>(GameInfo.GetLocationList((GameVersion)version, Data.Format, true));
         }
 
         private static string GetProgramTitle(PKM pkm)

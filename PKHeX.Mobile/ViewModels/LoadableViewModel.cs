@@ -8,7 +8,7 @@ namespace PKHeX.ViewModels
 {
     public class LoadableViewModel : BaseViewModel
     {
-        public ObservableCollection<LoadableSAV> Saves { get; set; } = new ObservableCollection<LoadableSAV>();
+        public ObservableCollection<LoadableSAV> Saves { get; set; } = new();
         public ObservableCollection<LoadableSAV> Filtered { get; set; }
 
         public ICommand SearchCommand => new Command<string>(SearchItems);
@@ -22,7 +22,7 @@ namespace PKHeX.ViewModels
             else
             {
                 var filteredItems = Saves
-                    .Where(bear => bear.File.Metadata.FileName.IndexOf(query, System.StringComparison.OrdinalIgnoreCase) >= 0)
+                    .Where(bear => bear.File.Metadata.FileName is { } s && s.IndexOf(query, System.StringComparison.OrdinalIgnoreCase) >= 0)
                     .ToList();
                 Filtered = new ObservableCollection<LoadableSAV>(filteredItems);
             }

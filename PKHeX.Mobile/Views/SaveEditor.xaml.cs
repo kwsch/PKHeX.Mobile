@@ -19,8 +19,6 @@ using Xamarin.Forms;
 
 namespace PKHeX.Mobile.Views
 {
-    // Learn more about making custom code visible in the Xamarin.Forms previewer
-    // by visiting https://aka.ms/xamarinforms-previewer
     [DesignTimeVisible(false)]
     public partial class SaveEditor : ContentPage
     {
@@ -105,6 +103,8 @@ namespace PKHeX.Mobile.Views
         {
             int index = Array.IndexOf(BoxSprites, (Image)sender);
             var arr = VM.CurrentBoxData;
+            if ((uint) index >= arr.Count)
+                return;
             UpdateSelectedPKM(arr[index]);
         }
 
@@ -112,6 +112,8 @@ namespace PKHeX.Mobile.Views
         {
             int index = Array.IndexOf(PartySprites, (Image)sender);
             var arr = VM.PartyData;
+            if ((uint)index >= arr.Count)
+                return;
             UpdateSelectedPKM(arr[index]);
         }
 
@@ -120,6 +122,8 @@ namespace PKHeX.Mobile.Views
             var img = (Image)sender;
             int index = Array.IndexOf(BoxSprites, (Image)sender);
             var arr = VM.CurrentBoxData;
+            if ((uint)index >= arr.Count)
+                return;
 
             await TapStoredPKM(arr, index, img).ConfigureAwait(false);
         }
@@ -129,6 +133,8 @@ namespace PKHeX.Mobile.Views
             var img = (Image)sender;
             int index = Array.IndexOf(PartySprites, (Image)sender);
             var arr = VM.PartyData;
+            if ((uint)index >= arr.Count)
+                return;
 
             await TapStoredPKM(arr, index, img).ConfigureAwait(false);
         }
