@@ -94,7 +94,7 @@ namespace PKHeX.Mobile.Logic
                 }
             } catch
             {
-                await UserDialogs.Instance.AlertAsync($"Failed to access \"outputFolder\" please grant All File Access Special Permision").ConfigureAwait(false);
+                await UserDialogs.Instance.AlertAsync($"Failed to access \"" + outputFolder + "\" please grant All File Access Special Permision").ConfigureAwait(false);
                 return false;
             }
             String myDate = DateTime.Now.ToString("dd-MM-yyyy HH.mm.ss");
