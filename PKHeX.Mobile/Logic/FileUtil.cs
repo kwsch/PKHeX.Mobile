@@ -86,16 +86,9 @@ namespace PKHeX.Mobile.Logic
             }
 
             //Create directory structure
-            try
+            if (!Directory.Exists(outputFolder))
             {
-                if (!Directory.Exists(outputFolder))
-                {
-                    Directory.CreateDirectory(outputFolder);
-                }
-            } catch
-            {
-                await UserDialogs.Instance.AlertAsync($"Failed to access \"" + outputFolder + "\" please grant All File Access Special Permision").ConfigureAwait(false);
-                return false;
+                Directory.CreateDirectory(outputFolder);
             }
             String myDate = DateTime.Now.ToString("dd-MM-yyyy HH.mm.ss");
             if (!Directory.Exists(outputFolder + myDate + "/"))
@@ -120,7 +113,8 @@ namespace PKHeX.Mobile.Logic
             catch (Exception ex)
 #pragma warning restore CA1031 // Do not catch general exception types
             {
-                await UserDialogs.Instance.AlertAsync($"Failed: {ex}").ConfigureAwait(false);
+                await UserDialogs.Instance.AlertAsync($"Failed to access \"" + outputFolder + "\" please grant All File Access Special Permision").ConfigureAwait(false);
+                //await UserDialogs.Instance.AlertAsync($"Failed: {ex}").ConfigureAwait(false);
                 return false;
             }
         }
