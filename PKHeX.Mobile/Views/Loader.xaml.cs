@@ -8,15 +8,37 @@ using PKHeX.Mobile.Models;
 using PKHeX.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using System.IO;
 
 namespace PKHeX.Mobile.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class Loader : ContentPage
     {
+        private static string outputFolder = "/storage/emulated/0/PkHex/";
         public Loader()
         {
             InitializeComponent();
+            initialLoad();
+        }
+
+        private async void initialLoad()
+        {
+            if (CV_Saves.SelectedItem == null)
+            {
+                foreach (string filePath in Directory.EnumerateFiles(outputFolder, "*", SearchOption.AllDirectories))
+                {
+                    var sav = Logic.FileUtil.TryGetSaveFile(filePath);
+                    if (sav != null)
+                    {
+                        var match = VM.Saves.FirstOrDefault(z => z.LocatedAt(sav.Metadata.FilePath));
+                        if (match != null)
+                            CV_Saves.SelectedItem = match;
+                        else
+                            await LoadNewSaveFile(sav).ConfigureAwait(false);
+                    }
+                }
+            }
         }
 
         private async void TgrOpenTapped(object sender, EventArgs e)

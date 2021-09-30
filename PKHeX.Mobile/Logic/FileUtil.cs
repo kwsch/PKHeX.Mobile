@@ -12,6 +12,7 @@ namespace PKHeX.Mobile.Logic
     // todo: rename this class to not clash with PKHeX.Core
     public static class FileUtil
     {
+        private static string outputFolder = "/storage/emulated/0/PkHex/";
         public static async Task<FileResult> PickFile()
         {
             var fileData = await FilePicker.PickAsync(PickOptions.Default).ConfigureAwait(false);
@@ -56,6 +57,26 @@ namespace PKHeX.Mobile.Logic
             }
         }
 
+        public static SaveFile TryGetSaveFile(string filePath)
+        {
+            try
+            {
+                var data = File.ReadAllBytes(filePath);
+                var len = data.Length;
+                bool isPossibleSAV = SaveUtil.IsSizeValid(len);
+                if (!isPossibleSAV)
+                    return null;
+                var sav = SaveUtil.GetVariantSAV(data);
+                sav?.Metadata.SetExtraInfo(filePath);
+                return sav;
+            }
+            catch
+            {
+                //Ignore errors as this is meant to be a background scanning function
+                return null;
+            }
+        }
+
         public static async Task<bool> ExportSAV(SaveFile sav)
         {
             if (!sav.State.Exportable)
@@ -67,23 +88,23 @@ namespace PKHeX.Mobile.Logic
             //Create directory structure
             try
             {
-                if (!Directory.Exists("/storage/emulated/0/PkHex/"))
+                if (!Directory.Exists(outputFolder))
                 {
-                    Directory.CreateDirectory("/storage/emulated/0/PkHex/");
+                    Directory.CreateDirectory(outputFolder);
                 }
             } catch
             {
-                await UserDialogs.Instance.AlertAsync($"Failed to access \"/storage/emulated/0/PkHex/\" please grant All File Access Special Permision").ConfigureAwait(false);
+                await UserDialogs.Instance.AlertAsync($"Failed to access \"outputFolder\" please grant All File Access Special Permision").ConfigureAwait(false);
                 return false;
             }
             String myDate = DateTime.Now.ToString("dd-MM-yyyy HH.mm.ss");
-            if (!Directory.Exists("/storage/emulated/0/PkHex/" + myDate + "/"))
+            if (!Directory.Exists(outputFolder + myDate + "/"))
             {
-                Directory.CreateDirectory("/storage/emulated/0/PkHex/" + myDate + "/");
+                Directory.CreateDirectory(outputFolder + myDate + "/");
             }
 
             var data = sav.Write();
-            var path = "/storage/emulated/0/PkHex/" + myDate + "/" + Path.GetFileName(sav.Metadata.FilePath);
+            var path = outputFolder + myDate + "/" + Path.GetFileName(sav.Metadata.FilePath);
             sav?.Metadata.SetExtraInfo(path);
             Debug.WriteLine($"File path moved: {sav.Metadata.FilePath}");
             try
