@@ -18,6 +18,7 @@ namespace PKHeX.Mobile.Logic
             if (fileData == null)
                 return null; // user canceled file picking
             Debug.WriteLine($"File name chosen: {fileData.FileName}");
+            Debug.WriteLine($"File path chosen: {fileData.FullPath}");
             return fileData;
         }
 
@@ -63,13 +64,33 @@ namespace PKHeX.Mobile.Logic
                 return false;
             }
 
+            //Create directory structure
+            try
+            {
+                if (!Directory.Exists("/storage/emulated/0/PkHex/"))
+                {
+                    Directory.CreateDirectory("/storage/emulated/0/PkHex/");
+                }
+            } catch
+            {
+                await UserDialogs.Instance.AlertAsync($"Failed to access \"/storage/emulated/0/PkHex/\" please grant All File Access Special Permision").ConfigureAwait(false);
+                return false;
+            }
+            /*String myDate = DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss");
+            if (!Directory.Exists("/storage/emulated/0/PkHex/" + myDate))
+            {
+                Directory.CreateDirectory("/storage/emulated/0/PkHex/" + myDate);
+            }*/
+
             var data = sav.Write();
-            var path = sav.Metadata.FilePath;
+            var path = "/storage/emulated/0/PkHex/" /*+ myDate + "/"*/ + Path.GetFileName(sav.Metadata.FilePath);
+            sav?.Metadata.SetExtraInfo(path);
+            Debug.WriteLine($"File path moved: {sav.Metadata.FilePath}");
             try
             {
                 if (sav.State.Exportable)
                     await SaveBackup(sav).ConfigureAwait(false);
-
+                File.Create(path).Close();
                 await File.WriteAllBytesAsync(path, data).ConfigureAwait(false);
                 await UserDialogs.Instance.AlertAsync($"Exported save file to: {path}").ConfigureAwait(false);
                 return true;
