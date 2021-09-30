@@ -24,26 +24,30 @@ namespace PKHeX.Mobile.Views
 
         private async void initialLoad()
         {
-            if (CV_Saves.SelectedItem == null)
+            try
             {
-                try
+                if (CV_Saves.SelectedItem == null)
                 {
-                    foreach (string filePath in Directory.EnumerateFiles(outputFolder, "*", SearchOption.AllDirectories))
+                    if (Directory.Exists(outputFolder))
                     {
-                        var sav = Logic.FileUtil.TryGetSaveFile(filePath);
-                        if (sav != null)
+                        foreach (string filePath in Directory.EnumerateFiles(outputFolder, "*", SearchOption.AllDirectories))
                         {
-                            var match = VM.Saves.FirstOrDefault(z => z.LocatedAt(sav.Metadata.FilePath));
-                            if (match != null)
-                                CV_Saves.SelectedItem = match;
-                            else
-                                await LoadNewSaveFile(sav).ConfigureAwait(false);
+                            var sav = Logic.FileUtil.TryGetSaveFile(filePath);
+                            if (sav != null)
+                            {
+                                var match = VM.Saves.FirstOrDefault(z => z.LocatedAt(sav.Metadata.FilePath));
+                                if (match != null)
+                                    CV_Saves.SelectedItem = match;
+                                else
+                                    await LoadNewSaveFile(sav).ConfigureAwait(false);
+                            }
                         }
                     }
-                } catch
-                {
-                    //first time load, ignore error
                 }
+            } catch
+            {
+                //first time load, ignore error
+                return;
             }
         }
 
