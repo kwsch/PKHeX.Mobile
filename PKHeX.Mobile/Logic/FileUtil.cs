@@ -76,14 +76,14 @@ namespace PKHeX.Mobile.Logic
                 await UserDialogs.Instance.AlertAsync($"Failed to access \"/storage/emulated/0/PkHex/\" please grant All File Access Special Permision").ConfigureAwait(false);
                 return false;
             }
-            /*String myDate = DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss");
-            if (!Directory.Exists("/storage/emulated/0/PkHex/" + myDate))
+            String myDate = DateTime.Now.ToString("dd-MM-yyyy HH.mm.ss");
+            if (!Directory.Exists("/storage/emulated/0/PkHex/" + myDate + "/"))
             {
-                Directory.CreateDirectory("/storage/emulated/0/PkHex/" + myDate);
-            }*/
+                Directory.CreateDirectory("/storage/emulated/0/PkHex/" + myDate + "/");
+            }
 
             var data = sav.Write();
-            var path = "/storage/emulated/0/PkHex/" /*+ myDate + "/"*/ + Path.GetFileName(sav.Metadata.FilePath);
+            var path = "/storage/emulated/0/PkHex/" + myDate + "/" + Path.GetFileName(sav.Metadata.FilePath);
             sav?.Metadata.SetExtraInfo(path);
             Debug.WriteLine($"File path moved: {sav.Metadata.FilePath}");
             try
