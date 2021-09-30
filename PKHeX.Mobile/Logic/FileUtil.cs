@@ -90,7 +90,7 @@ namespace PKHeX.Mobile.Logic
             {
                 Directory.CreateDirectory(outputFolder);
             }
-            String myDate = DateTime.Now.ToString("dd-MM-yyyy HH.mm.ss");
+            String myDate = DateTime.Now.ToString("yyyy-MM-dd HH.mm.ss");
             if (!Directory.Exists(outputFolder + myDate + "/"))
             {
                 Directory.CreateDirectory(outputFolder + myDate + "/");
