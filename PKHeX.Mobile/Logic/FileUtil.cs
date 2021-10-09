@@ -12,12 +12,14 @@ namespace PKHeX.Mobile.Logic
     // todo: rename this class to not clash with PKHeX.Core
     public static class FileUtil
     {
+        private static string outputFolder = "/storage/emulated/0/PkHex/";
         public static async Task<FileResult> PickFile()
         {
             var fileData = await FilePicker.PickAsync(PickOptions.Default).ConfigureAwait(false);
             if (fileData == null)
                 return null; // user canceled file picking
             Debug.WriteLine($"File name chosen: {fileData.FileName}");
+            Debug.WriteLine($"File path chosen: {fileData.FullPath}");
             return fileData;
         }
 
@@ -55,6 +57,26 @@ namespace PKHeX.Mobile.Logic
             }
         }
 
+        public static SaveFile TryGetSaveFile(string filePath)
+        {
+            try
+            {
+                var data = File.ReadAllBytes(filePath);
+                var len = data.Length;
+                bool isPossibleSAV = SaveUtil.IsSizeValid(len);
+                if (!isPossibleSAV)
+                    return null;
+                var sav = SaveUtil.GetVariantSAV(data);
+                sav?.Metadata.SetExtraInfo(filePath);
+                return sav;
+            }
+            catch
+            {
+                //Ignore errors as this is meant to be a background scanning function
+                return null;
+            }
+        }
+
         public static async Task<bool> ExportSAV(SaveFile sav)
         {
             if (!sav.State.Exportable)
@@ -63,13 +85,26 @@ namespace PKHeX.Mobile.Logic
                 return false;
             }
 
+            //Create directory structure
+            if (!Directory.Exists(outputFolder))
+            {
+                Directory.CreateDirectory(outputFolder);
+            }
+            String myDate = DateTime.Now.ToString("yyyy-MM-dd HH.mm.ss");
+            if (!Directory.Exists(outputFolder + myDate + "/"))
+            {
+                Directory.CreateDirectory(outputFolder + myDate + "/");
+            }
+
             var data = sav.Write();
-            var path = sav.Metadata.FilePath;
+            var path = outputFolder + myDate + "/" + Path.GetFileName(sav.Metadata.FilePath);
+            sav?.Metadata.SetExtraInfo(path);
+            Debug.WriteLine($"File path moved: {sav.Metadata.FilePath}");
             try
             {
                 if (sav.State.Exportable)
                     await SaveBackup(sav).ConfigureAwait(false);
-
+                File.Create(path).Close();
                 await File.WriteAllBytesAsync(path, data).ConfigureAwait(false);
                 await UserDialogs.Instance.AlertAsync($"Exported save file to: {path}").ConfigureAwait(false);
                 return true;
@@ -78,7 +113,8 @@ namespace PKHeX.Mobile.Logic
             catch (Exception ex)
 #pragma warning restore CA1031 // Do not catch general exception types
             {
-                await UserDialogs.Instance.AlertAsync($"Failed: {ex}").ConfigureAwait(false);
+                await UserDialogs.Instance.AlertAsync($"Failed to access \"" + outputFolder + "\" please grant All File Access Special Permision").ConfigureAwait(false);
+                //await UserDialogs.Instance.AlertAsync($"Failed: {ex}").ConfigureAwait(false);
                 return false;
             }
         }
