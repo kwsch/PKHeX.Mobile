@@ -12,7 +12,8 @@ namespace PKHeX.Mobile.Logic
     // todo: rename this class to not clash with PKHeX.Core
     public static class FileUtil
     {
-        private static string outputFolder = "/storage/emulated/0/PkHex/";
+        private const string outputFolder = "/storage/emulated/0/PkHex/";
+
         public static async Task<FileResult> PickFile()
         {
             var fileData = await FilePicker.PickAsync(PickOptions.Default).ConfigureAwait(false);
@@ -38,7 +39,7 @@ namespace PKHeX.Mobile.Logic
                     return null;
 
                 var data = new byte[len];
-                stream.Read(data);
+                _ = stream.Read(data);
                 var sav = SaveUtil.GetVariantSAV(data);
                 sav?.Metadata.SetExtraInfo(file.FullPath);
                 return sav;
@@ -48,9 +49,7 @@ namespace PKHeX.Mobile.Logic
                 await UserDialogs.Instance.AlertAsync($"The file is being passed as a URI instead of a path. Please try moving your saves to a different folder.\n\nStack Trace:\n{ex}").ConfigureAwait(false);
                 return null;
             }
-#pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception ex)
-#pragma warning restore CA1031 // Do not catch general exception types
             {
                 await UserDialogs.Instance.AlertAsync($"Exception choosing file: {ex}").ConfigureAwait(false);
                 return null;
@@ -90,7 +89,7 @@ namespace PKHeX.Mobile.Logic
             {
                 Directory.CreateDirectory(outputFolder);
             }
-            String myDate = DateTime.Now.ToString("yyyy-MM-dd HH.mm.ss");
+            string myDate = DateTime.Now.ToString("yyyy-MM-dd HH.mm.ss");
             if (!Directory.Exists(outputFolder + myDate + "/"))
             {
                 Directory.CreateDirectory(outputFolder + myDate + "/");
@@ -98,28 +97,26 @@ namespace PKHeX.Mobile.Logic
 
             var data = sav.Write();
             var path = outputFolder + myDate + "/" + Path.GetFileName(sav.Metadata.FilePath);
-            sav?.Metadata.SetExtraInfo(path);
+            sav.Metadata.SetExtraInfo(path);
             Debug.WriteLine($"File path moved: {sav.Metadata.FilePath}");
             try
             {
                 if (sav.State.Exportable)
-                    await SaveBackup(sav).ConfigureAwait(false);
+                    SaveBackup(sav);
                 File.Create(path).Close();
                 await File.WriteAllBytesAsync(path, data).ConfigureAwait(false);
                 await UserDialogs.Instance.AlertAsync($"Exported save file to: {path}").ConfigureAwait(false);
                 return true;
             }
-#pragma warning disable CA1031 // Do not catch general exception types
-            catch (Exception ex)
-#pragma warning restore CA1031 // Do not catch general exception types
+            catch
             {
-                await UserDialogs.Instance.AlertAsync($"Failed to access \"" + outputFolder + "\" please grant All File Access Special Permision").ConfigureAwait(false);
+                await UserDialogs.Instance.AlertAsync($"Failed to access \"{outputFolder}\" please grant All File Access Special Permission").ConfigureAwait(false);
                 //await UserDialogs.Instance.AlertAsync($"Failed: {ex}").ConfigureAwait(false);
                 return false;
             }
         }
 
-        private static async Task SaveBackup(SaveFile sav)
+        private static void SaveBackup(SaveFile sav)
         {
             var docPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             var bakPath = Path.Combine(docPath, "PKHeX Backups");
@@ -138,7 +135,14 @@ namespace PKHeX.Mobile.Logic
                 return;
             }
 
-            await File.WriteAllBytesAsync(bakName, sav.State.BAK).ConfigureAwait(false);
+            var srcPath = sav.Metadata.FilePath;
+            if (srcPath is null)
+            {
+                Console.WriteLine("Unable to locate source file to back up.");
+                return;
+            }
+
+            File.Copy(srcPath, bakName);
             bool success = File.Exists(bakName);
             Console.WriteLine($"Backed up: {success}");
         }
