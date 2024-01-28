@@ -6,13 +6,15 @@ using PKHeX.Core;
 
 using Acr.UserDialogs;
 using Xamarin.Essentials;
+using System.Xml.Linq;
+using System.Linq;
 
 namespace PKHeX.Mobile.Logic
 {
     // todo: rename this class to not clash with PKHeX.Core
     public static class FileUtil
     {
-        private static string outputFolder = "/storage/emulated/0/PkHex/";
+        private static string outputFolderAndroid = "/storage/emulated/0/PKHeX/";
         public static async Task<FileResult> PickFile()
         {
             var fileData = await FilePicker.PickAsync(PickOptions.Default).ConfigureAwait(false);
@@ -33,7 +35,7 @@ namespace PKHeX.Mobile.Logic
 
                 await using var stream = await file.OpenReadAsync().ConfigureAwait(false);
                 var len = stream.Length;
-                bool isPossibleSAV = SaveUtil.IsSizeValid((int) len);
+                bool isPossibleSAV = SaveUtil.IsSizeValid((int)len);
                 if (!isPossibleSAV)
                     return null;
 
@@ -79,6 +81,7 @@ namespace PKHeX.Mobile.Logic
 
         public static async Task<bool> ExportSAV(SaveFile sav)
         {
+            Console.WriteLine("working");
             if (!sav.State.Exportable)
             {
                 await UserDialogs.Instance.AlertAsync("Can't export the current save file.").ConfigureAwait(false);
@@ -86,34 +89,70 @@ namespace PKHeX.Mobile.Logic
             }
 
             //Create directory structure
-            if (!Directory.Exists(outputFolder))
-            {
-                Directory.CreateDirectory(outputFolder);
-            }
+            var pathToPk = "";
+            var fullPath = "";
+            var pathToSav = "";
             String myDate = DateTime.Now.ToString("yyyy-MM-dd HH.mm.ss");
-            if (!Directory.Exists(outputFolder + myDate + "/"))
+            var platform = DeviceInfo.Platform;
+            switch (platform)
             {
-                Directory.CreateDirectory(outputFolder + myDate + "/");
+                case var value when value == DevicePlatform.Android:
+
+                    pathToPk = outputFolderAndroid;
+                    if (!Directory.Exists(pathToPk))
+                    {
+                        Directory.CreateDirectory(pathToPk);
+                    }
+
+                    fullPath = pathToPk + myDate + "/";
+                    if (!Directory.Exists(fullPath))
+                    {
+                        Directory.CreateDirectory(fullPath);
+                    }
+
+                    pathToSav = Path.Combine(fullPath, Path.GetFileName(sav.Metadata.FilePath));
+                    break;
+
+                case var value when value == DevicePlatform.iOS:
+                    pathToPk = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "PKHeX");
+                    if (!Directory.Exists(pathToPk))
+                    {
+                        Directory.CreateDirectory(pathToPk);
+                    }
+
+                    fullPath = Path.Combine(pathToPk, myDate);
+                    if (!Directory.Exists(fullPath))
+                    {
+                        Directory.CreateDirectory(fullPath);
+                    }
+
+                    pathToSav = Path.Combine(fullPath, Path.GetFileName(sav.Metadata.FilePath));
+                    break;
+
+                default:
+                    await UserDialogs.Instance.AlertAsync($"Unsupported operating system: {platform.ToString()}").ConfigureAwait(false);
+                    break;
             }
 
             var data = sav.Write();
-            var path = outputFolder + myDate + "/" + Path.GetFileName(sav.Metadata.FilePath);
-            sav?.Metadata.SetExtraInfo(path);
+
+            sav?.Metadata.SetExtraInfo(pathToSav);
             Debug.WriteLine($"File path moved: {sav.Metadata.FilePath}");
             try
             {
                 if (sav.State.Exportable)
                     await SaveBackup(sav).ConfigureAwait(false);
-                File.Create(path).Close();
-                await File.WriteAllBytesAsync(path, data).ConfigureAwait(false);
-                await UserDialogs.Instance.AlertAsync($"Exported save file to: {path}").ConfigureAwait(false);
+                Console.WriteLine("broke?");
+                File.Create(pathToSav).Close();
+                await File.WriteAllBytesAsync(pathToSav, data).ConfigureAwait(false);
+                await UserDialogs.Instance.AlertAsync($"Exported save file to: {pathToSav}").ConfigureAwait(false);
                 return true;
             }
 #pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception ex)
 #pragma warning restore CA1031 // Do not catch general exception types
             {
-                await UserDialogs.Instance.AlertAsync($"Failed to access \"" + outputFolder + "\" please grant All File Access Special Permision").ConfigureAwait(false);
+                await UserDialogs.Instance.AlertAsync($"Failed to access \"" + pathToPk + "\" please grant All File Access Special Permision").ConfigureAwait(false);
                 //await UserDialogs.Instance.AlertAsync($"Failed: {ex}").ConfigureAwait(false);
                 return false;
             }
