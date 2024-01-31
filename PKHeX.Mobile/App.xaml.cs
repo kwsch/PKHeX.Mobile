@@ -20,7 +20,8 @@ namespace PKHeX
             // Handle when your app starts
             Licensing.LoadLicenses();
             GameInfo.Strings = GameInfo.GetStrings(GameInfo.CurrentLanguage);
-            AppCenter.Start("ios=6696eefb-f004-4303-963d-72a3fe9a8061;",
+            AppCenter.Start("ios=6696eefb-f004-4303-963d-72a3fe9a8061;" +
+                "android=b5ca2318-5c7b-4943-b58a-a05e2efb68e6;",
                   typeof(Analytics), typeof(Crashes));
         }
 
