@@ -5,7 +5,7 @@
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
     <LangVersion>latest</LangVersion>
     <ApplicationIcon>icon.ico</ApplicationIcon>
-    <BuildWithMSBuildOnMono>true</BuildWithMSBuildOnMono>
+    <BuildWithMSBuildOnMono>false</BuildWithMSBuildOnMono>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
