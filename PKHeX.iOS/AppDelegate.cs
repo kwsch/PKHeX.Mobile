@@ -1,4 +1,5 @@
 ﻿using Foundation;
+using Syncfusion.SfNumericTextBox.XForms.iOS;
 using UIKit;
 
 namespace PKHeX.iOS
@@ -23,6 +24,8 @@ namespace PKHeX.iOS
 
             Syncfusion.XForms.iOS.TabView.SfTabViewRenderer.Init();
             Syncfusion.XForms.iOS.Accordion.SfAccordionRenderer.Init();
+            Syncfusion.XForms.iOS.ComboBox.SfComboBoxRenderer.Init();
+            new SfNumericTextBoxRenderer();
             ZXing.Net.Mobile.Forms.iOS.Platform.Init();
 
             LoadApplication(new App());

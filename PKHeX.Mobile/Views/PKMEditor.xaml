@@ -288,7 +288,7 @@
                     <ScrollView Padding="16">
                         <Grid x:Name="G_Moves" HorizontalOptions="Center" Padding="0" Margin="0" RowSpacing="10" ColumnSpacing="0">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="230" />
                                 <ColumnDefinition Width="80" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
@@ -442,11 +442,11 @@
                         </StackLayout>
                         <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
                             <Label x:Name="L_TID" VerticalTextAlignment="Center" Text="TID"></Label>
-                            <xForms:SfNumericTextBox Style="{StaticResource UintEntry65535}" Value="{Binding Data.TID}" Completed="HandleID" x:Name="TB_TID"/>
+                            <xForms:SfNumericTextBox Style="{StaticResource UintEntry65535}" Value="{Binding Data.TID}" Completed="HandleID" x:Name="TB_TID" WidthRequest="100"/>
                         </StackLayout>
                         <StackLayout Orientation="Horizontal" HorizontalOptions="Center" IsVisible="{Binding FeatureFlags.SID}">
                             <Label x:Name="L_SID" VerticalTextAlignment="Center" Text="SID"></Label>
-                            <xForms:SfNumericTextBox Style="{StaticResource UintEntry65535}" Value="{Binding Data.SID}" Completed="HandleID" x:Name="TB_SID"/>
+                            <xForms:SfNumericTextBox Style="{StaticResource UintEntry65535}" Value="{Binding Data.SID}" Completed="HandleID" x:Name="TB_SID" WidthRequest="100"/>
                         </StackLayout>
                         <StackLayout Orientation="Horizontal" HorizontalOptions="Center" IsVisible="{Binding FeatureFlags.Handler}">
                             <Label x:Name="L_HT" VerticalTextAlignment="Center" Text="HT"></Label>

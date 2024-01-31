@@ -75,7 +75,7 @@
                         <StackLayout>
                             <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
                                 <Button x:Name="B_Left" Text="&lt;&lt;"></Button>
-                                <comboBox:SfComboBox Text="Select a Box..." x:Name="CB_CurrentBox"
+                                <comboBox:SfComboBox Text="Select a Box..." x:Name="CB_CurrentBox" WidthRequest="160"
                                         DataSource="{Binding BoxNames}"/>
                                 <Button x:Name="B_Right" Text="&gt;&gt;"></Button>
                             </StackLayout>
