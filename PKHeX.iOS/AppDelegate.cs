@@ -1,4 +1,7 @@
 ﻿using Foundation;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
 using Syncfusion.SfNumericTextBox.XForms.iOS;
 using UIKit;
 
@@ -27,6 +30,8 @@ namespace PKHeX.iOS
             Syncfusion.XForms.iOS.ComboBox.SfComboBoxRenderer.Init();
             new SfNumericTextBoxRenderer();
             ZXing.Net.Mobile.Forms.iOS.Platform.Init();
+
+            AppCenter.Start("6696eefb-f004-4303-963d-72a3fe9a8061", typeof(Analytics), typeof(Crashes));
 
             LoadApplication(new App());
 
