@@ -165,6 +165,12 @@
     <PackageReference Include="Microsoft.AppCenter">
       <Version>5.0.3</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.AppCenter.Crashes">
+      <Version>5.0.3</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AppCenter.Analytics">
+      <Version>5.0.3</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
