@@ -20,6 +20,15 @@ steps:
   inputs:
     restoreSolution: '**/*.sln'
 
+
+- task: XamariniOS@2
+  inputs:
+    solutionFile: '**/*.sln'
+    configuration: 'Debug'
+    packageApp: true
+    buildForSimulator: true
+    runNugetRestore: true
+
 - task: XamarinAndroid@1
   inputs:
     projectFile: '**/*droid*.csproj'
