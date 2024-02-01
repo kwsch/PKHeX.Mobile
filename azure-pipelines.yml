@@ -28,16 +28,3 @@ steps:
     packageApp: true
     buildForSimulator: true
     runNugetRestore: true
-
-- task: XamarinAndroid@1
-  inputs:
-    projectFile: '**/*droid*.csproj'
-    outputDirectory: '$(outputDirectory)'
-    configuration: '$(buildConfiguration)'
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: PKHeX.Mobile'
-  inputs:
-    pathtoPublish: '$(outputDirectory)'
-    ArtifactName: PKHeX.Android
-  condition: succeededOrFailed()
