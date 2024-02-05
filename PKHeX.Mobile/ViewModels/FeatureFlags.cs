@@ -1,4 +1,4 @@
-using PKHeX.Core;
+﻿using PKHeX.Core;
 
 namespace PKHeX.ViewModels
 {

@@ -81,10 +81,13 @@ namespace PKHeX.Mobile.Views
             VM.Version = BindingUtil.GetValue(CB_Version.SelectedValue);
 
             // binding annoyances
-            var met = VM.MetLocations.Any(z => z.Value == VM.MetLocation) ? VM.MetLocation : 0;
-            var egg = VM.EggLocations.Any(z => z.Value == VM.EggLocation) ? VM.EggLocation : 0;
-            CB_Met_Location.SelectedItem = VM.MetLocations[VM.MetLocation = met];
-            CB_Egg_Location.SelectedItem = VM.EggLocations[VM.EggLocation = egg];
+            var metIndex = VM.MetLocations.IndexOf(VM.MetLocations.FirstOrDefault(loc => loc.Value == VM.MetLocation));
+            var eggIndex = VM.EggLocations.IndexOf(VM.EggLocations.FirstOrDefault(loc => loc.Value == VM.EggLocation));
+
+            VM.MetLocation = VM.EggLocations[metIndex].Value;
+            CB_Met_Location.SelectedItem = VM.MetLocations[metIndex];
+            VM.EggLocation = VM.EggLocations[eggIndex].Value;
+            CB_Egg_Location.SelectedItem = VM.EggLocations[eggIndex];
         }
 
         private void CB_Species_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
