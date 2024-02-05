@@ -6,6 +6,7 @@ namespace PKHeX.ViewModels
     {
         public FeatureFlags(PKM pkm) => Update(pkm);
         public bool Nature { get; private set; }
+        public bool NatureG3G4 { get; private set; }
         public bool HeldItem { get; private set; }
         public bool Version { get; private set; }
         public bool Ball { get; private set; }
@@ -19,7 +20,8 @@ namespace PKHeX.ViewModels
 
         public void Update(PKM pkm)
         {
-            Nature = pkm.Format >= 3;
+            Nature = pkm.Format >= 5;
+            NatureG3G4 = pkm.Format == 3 || pkm.Format == 4;
             HeldItem = pkm.Format >= 2;
             Version = pkm.Format >= 3;
             Ball = pkm.Format >= 3;

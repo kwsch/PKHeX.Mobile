@@ -67,6 +67,7 @@ namespace PKHeX.Mobile.Views
 
         private void CB_HeldItem_OnSelectionChanged(object sender, SelectionChangedEventArgs e) => VM.Item = BindingUtil.GetValue(CB_HeldItem.SelectedValue);
         private void CB_Nature_OnSelectionChanged(object sender, SelectionChangedEventArgs e) => VM.Nature = BindingUtil.GetValue(CB_Nature.SelectedValue);
+        private void CB_Nature_OnSelectionChanged_G3G4(object sender, SelectionChangedEventArgs e) => VM.NatureG3G4 = BindingUtil.GetValue(CB_Nature_G3G4.SelectedValue);
         private void CB_Move1_OnSelectionChanged(object sender, SelectionChangedEventArgs e) => VM.Move1 = BindingUtil.GetValue(CB_Move1.SelectedValue);
         private void CB_Move2_OnSelectionChanged(object sender, SelectionChangedEventArgs e) => VM.Move2 = BindingUtil.GetValue(CB_Move2.SelectedValue);
         private void CB_Move3_OnSelectionChanged(object sender, SelectionChangedEventArgs e) => VM.Move3 = BindingUtil.GetValue(CB_Move3.SelectedValue);

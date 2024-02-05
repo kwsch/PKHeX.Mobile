@@ -141,6 +141,17 @@
                                    SelectedValue="{Binding Nature}"
                                    SelectionChanged="CB_Nature_OnSelectionChanged"/>
 
+                            <Label Text="Nature" x:Name="L_Nature_G3G4" IsVisible="{Binding FeatureFlags.NatureG3G4}"
+                                   Grid.Row="5" Grid.Column="0"
+                                   VerticalTextAlignment="Center" HorizontalTextAlignment="End" />
+                            <comboBox:SfComboBox x:Name="CB_Nature_G3G4" Watermark="NatureG3G4"
+                                   Grid.Row="5" Grid.Column="1"
+                                   Style="{StaticResource CBStyle}"
+                                   IsVisible="{Binding FeatureFlags.NatureG3G4}"
+                                   DataSource="{Binding Source.NatureList}"
+                                   SelectedValue="{Binding NatureG3G4}"
+                                   SelectionChanged="CB_Nature_OnSelectionChanged_G3G4"/>
+
                             <Label Text="Form" x:Name="L_AltForm" IsVisible="{Binding FeatureFlags.Form}"
                                    Grid.Row="6" Grid.Column="0"
                                    VerticalTextAlignment="Center" HorizontalTextAlignment="End" />

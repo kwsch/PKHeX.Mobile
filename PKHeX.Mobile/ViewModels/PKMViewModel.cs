@@ -255,6 +255,17 @@ namespace PKHeX.ViewModels
             }
         }
 
+        public int NatureG3G4
+        {
+            get => nature;
+            set
+            {
+                if (!SetProperty(ref nature, value))
+                    return;
+                Data.SetPIDNature(value);
+            }
+        }
+
         public int Move1
         {
             get => move1;
