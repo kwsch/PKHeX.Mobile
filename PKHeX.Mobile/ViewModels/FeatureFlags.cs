@@ -1,4 +1,4 @@
-﻿using PKHeX.Core;
+using PKHeX.Core;
 
 namespace PKHeX.ViewModels
 {
@@ -19,7 +19,7 @@ namespace PKHeX.ViewModels
 
         public void Update(PKM pkm)
         {
-            Nature = pkm.Format >= 5;
+            Nature = pkm.Format >= 3;
             HeldItem = pkm.Format >= 2;
             Version = pkm.Format >= 3;
             Ball = pkm.Format >= 3;
