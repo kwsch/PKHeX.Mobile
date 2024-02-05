@@ -155,10 +155,10 @@ namespace PKHeX.Mobile.Views
                     await UserDialogs.Instance.AlertAsync(new ShowdownSet(pk).Text).ConfigureAwait(false);
                     return;
                 case 1: // Set
-                    LoadPKM(arr[index] = VM.Pane.Clone(), img);
+                    Device.BeginInvokeOnMainThread(() => LoadPKM(arr[index] = VM.Pane.Clone(), img));
                     return;
                 case 2: // Delete
-                    LoadPKM(arr[index] = VM.SAV.BlankPKM, img);
+                    Device.BeginInvokeOnMainThread(() => LoadPKM(arr[index] = VM.SAV.BlankPKM, img));
                     return;
             }
 
